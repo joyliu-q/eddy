@@ -18,8 +18,7 @@ import ReactFlow, {
 } from "reactflow";
 // 👇 you need to import the reactflow styles
 import "reactflow/dist/style.css";
-import { ReactComponent as DefaultMic } from "./DefaultMic.svg";
-import { ReactComponent as MicPaused } from "./MicPaused.svg";
+import { RecordNode } from "./components/RecordNode";
 interface MapNode extends Node {
   data: {
     sentences: string[];
@@ -27,24 +26,22 @@ interface MapNode extends Node {
 }
 const initialNodes: MapNode[] = [
   {
-    id: "Hackathons",
-    type: "custom",
+    id: "Record",
+    type: "record",
+    draggable: false,
     position: { x: 0, y: 0 },
     data: {
-      sentences: ["I love building at treehacks.", "Hackathons are awesome!"],
+      sentences: [],
     },
   },
-  {
-    id: "Pets",
-    type: "custom",
-    position: { x: 0, y: 100 },
-    data: {
-      sentences: [
-        "I like pets and I cannot lie",
-        "Cat's are cool and so are dogs",
-      ],
-    },
-  },
+  // {
+  //   id: "Hackathons",
+  //   type: "custom",
+  //   position: { x: 0, y: 100 },
+  //   data: {
+  //     sentences: ["I love building at treehacks.", "Hackathons are awesome!"],
+  //   },
+  // },
 ];
 const initialEdges: Edge[] = [
   {
@@ -68,16 +65,14 @@ const mapNodetoNode = (node: MapNode): Node => {
 };
 
 function App() {
-  const nodeTypes = useMemo(() => ({ custom: CustomNode }), []);
+  const nodeTypes = useMemo(
+    () => ({ custom: CustomNode, record: RecordNode }),
+    []
+  );
   const [nodes, setNodes, onNodesChange] =
     useNodesState<CustomNodeData>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [recording, setRecording] = React.useState(false);
-
-  const onConnect = useCallback(
-    (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
-    [setEdges]
-  );
 
   const createEdge = useCallback(
     (source: string, target: string) => {
@@ -94,6 +89,12 @@ function App() {
       );
     },
     [setEdges]
+  );
+
+  const onConnect = useCallback(
+    (connection: Connection) =>
+      createEdge(connection.source!, connection.target!),
+    [createEdge]
   );
 
   const createNode = useCallback(
@@ -115,13 +116,6 @@ function App() {
         fitView
         fitViewOptions={fitViewOptions}
       ></ReactFlow>
-      <div onClick={() => setRecording((r) => !r)}>
-        {recording ? (
-          <MicPaused style={{ width: 80, height: 80 }} />
-        ) : (
-          <DefaultMic style={{ width: 80, height: 80 }} />
-        )}
-      </div>
     </div>
   );
 }
