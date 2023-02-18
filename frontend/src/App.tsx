@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { CustomNode, CustomNodeData } from "./components/Node";
 import { useCallback, useMemo } from "react";
-import { Button, ChakraProvider, Input } from "@chakra-ui/react";
+import { Button, ChakraProvider, Flex, Input } from "@chakra-ui/react";
 import ReactFlow, {
   Background,
   useNodesState,
@@ -18,11 +18,10 @@ import ReactFlow, {
 // 👇 you need to import the reactflow styles
 import "reactflow/dist/style.css";
 import { RecordNode } from "./components/RecordNode";
-import { addSentence } from "./utils/api";
+import { addSentenceChunk } from "./utils/api";
 import { MapNode, NodeType } from "./types";
 
 import Navbar from "./components/Navbar";
-import AboutPage from "./pages/AboutPage";
 
 const initialNodes: MapNode[] = [
   {
@@ -79,7 +78,7 @@ function App() {
   }, []);
 
   const addSentenceToGraph = useCallback(async (sentence: string) => {
-    const { edges, nodes } = await addSentence(sentence);
+    const { edges, nodes } = await addSentenceChunk(sentence);
     updateGraph(nodes, edges);
   }, []);
 
@@ -87,10 +86,30 @@ function App() {
   const [sentence, setSentence] = React.useState("");
   return (
     <ChakraProvider>
-      <div className="App">
         <Navbar />
-        <AboutPage/>
-      </div>
+        <Flex height="calc(100vh - 100px)">
+          <ReactFlow
+              nodes={nodes}
+              nodeTypes={nodeTypes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              fitView
+              fitViewOptions={fitViewOptions}
+            >
+              <Background color="#FFD39E" />
+          </ReactFlow>
+      </Flex>        
+      <Flex height="100px">
+      <Input
+        value={sentence}
+        onChange={(e) => setSentence(e.target.value)}
+        placeholder="Enter a sentence here."
+      />
+        <Button onClick={() => addSentenceToGraph(sentence)}>Add</Button>
+      </Flex>
+      
     </ChakraProvider>
   );
 }
