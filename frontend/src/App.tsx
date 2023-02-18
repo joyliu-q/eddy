@@ -21,6 +21,8 @@ import { RecordNode } from "./components/RecordNode";
 import { addSentence } from "./utils/api";
 import { MapNode, NodeType } from "./types";
 
+import Navbar from "./components/Navbar";
+
 const initialNodes: MapNode[] = [
   {
     id: "root",
@@ -85,6 +87,7 @@ function App() {
   return (
     <ChakraProvider>
       <div className="App">
+        <Navbar />
         <ReactFlow
           nodes={nodes}
           nodeTypes={nodeTypes}
