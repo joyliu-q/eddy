@@ -1,0 +1,24 @@
+[08:22:38.851] Global cache location '/Users/bjar/Library/Caches/typescript/4.9', safe file path '/users/bjar/git/treehacks/frontend/node_modules/typescript/lib/typingsafelist.json', types map path /users/bjar/git/treehacks/frontend/node_modules/typescript/lib/typesmap.json
+[08:22:38.852] Processing cache location '/Users/bjar/Library/Caches/typescript/4.9'
+[08:22:38.853] Trying to find '/Users/bjar/Library/Caches/typescript/4.9/package.json'...
+[08:22:38.856] Loaded content of '/Users/bjar/Library/Caches/typescript/4.9/package.json': {"private":true,"dependencies":{"types-registry":"^0.1.628"},"devDependencies":{"@types/cookie":"^0.5.1","@types/eslint":"^8.4.10","@types/react":"^18.0.26","@types/react-dom":"^18.0.10","@types/styled-components":"^5.1.26"}}
+[08:22:38.856] Loaded content of '/Users/bjar/Library/Caches/typescript/4.9/package-lock.json'
+[08:22:38.867] Adding entry into typings cache: 'cookie' => '/Users/bjar/Library/Caches/typescript/4.9/node_modules/@types/cookie/index.d.ts'
+[08:22:38.871] Adding entry into typings cache: 'eslint' => '/Users/bjar/Library/Caches/typescript/4.9/node_modules/@types/eslint/index.d.ts'
+[08:22:38.875] Adding entry into typings cache: 'react' => '/Users/bjar/Library/Caches/typescript/4.9/node_modules/@types/react/index.d.ts'
+[08:22:38.877] Adding entry into typings cache: 'react-dom' => '/Users/bjar/Library/Caches/typescript/4.9/node_modules/@types/react-dom/index.d.ts'
+[08:22:38.880] Adding entry into typings cache: 'styled-components' => '/Users/bjar/Library/Caches/typescript/4.9/node_modules/@types/styled-components/index.d.ts'
+[08:22:38.880] Finished processing cache location '/Users/bjar/Library/Caches/typescript/4.9'
+[08:22:38.881] Process id: 46661
+[08:22:38.881] NPM location: /usr/local/bin/npm (explicit '--npmLocation' not  provided)
+[08:22:38.881] validateDefaultNpmLocation: false
+[08:22:38.881] Npm config file: /Users/bjar/Library/Caches/typescript/4.9/package.json
+[08:22:38.881] Updating types-registry npm package...
+[08:22:38.882] Exec: /usr/local/bin/npm install --ignore-scripts types-registry@latest
+[08:22:39.793]     Succeeded. stdout:
+    
+    changed 1 package, and audited 15 packages in 735ms
+
+found 0 vulnerabilities
+
+[08:22:39.793] Updated types-registry npm package
