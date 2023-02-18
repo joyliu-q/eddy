@@ -128,13 +128,13 @@ def add_sentence_node(sentence: str, graph: Graph):
     graph.add_edge(edge)
 
 
-graph = Graph()
-test_sentences = [
-    "Today, I want to go to the store",
-    "At the store, I want to buy some milk",
-    "I want to buy some milk because I am hungry",
-    "Cats are cool",
-]
-for s in test_sentences:
-    add_sentence_node(s, graph)
-graph.debug()
+# graph = Graph()
+# test_sentences = [
+#     "Today, I want to go to the store",
+#     "At the store, I want to buy some milk",
+#     "I want to buy some milk because I am hungry",
+#     "Cats are cool",
+# ]
+# for s in test_sentences:
+#     add_sentence_node(s, graph)
+# graph.debug()
