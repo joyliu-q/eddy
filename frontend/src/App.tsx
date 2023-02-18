@@ -32,6 +32,13 @@ function App() {
     (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
     [setEdges]
   );
+
+  const addExpNode = () => {
+    setNodes((nodes) => [
+      ...nodes,
+      { id: "3", position: { x: 100, y: 100 }, data: { label: "Test" } },
+    ]);
+  };
   return (
     <div className="App">
       <ReactFlow
@@ -47,6 +54,7 @@ function App() {
         <Controls />
         <Background />
       </ReactFlow>
+      <button onClick={() => addExpNode()}>Click me!</button>
     </div>
   );
 }
