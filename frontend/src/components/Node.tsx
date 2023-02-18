@@ -1,3 +1,4 @@
+import { Flex } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { Handle, Position } from "reactflow";
 import "./Node.css";
@@ -21,7 +22,15 @@ export const CustomNode = ({
   return (
     <>
       <Handle type="target" position={Position.Top} />
-      <div className="Node">
+      <Flex
+        className="Node"
+        bgColor="#fff"
+        border={`.5px solid #8ecae6`}
+        borderRadius="5px"
+        cursor={"pointer"}
+        fontSize=".5rem"
+        textAlign={"center"}
+      >
         <div className="title">
           <p>{id}</p>
           <button
@@ -38,7 +47,7 @@ export const CustomNode = ({
             })}
           </ul>
         )}
-      </div>
+      </Flex>
       <Handle
         className="Handle"
         type="source"

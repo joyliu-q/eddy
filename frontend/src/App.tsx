@@ -2,9 +2,8 @@ import React from "react";
 import "./App.css";
 import { CustomNode, CustomNodeData } from "./components/Node";
 import { useCallback, useMemo } from "react";
+import { ChakraProvider } from '@chakra-ui/react'
 import ReactFlow, {
-  MiniMap,
-  Controls,
   Background,
   useNodesState,
   useEdgesState,
@@ -67,6 +66,7 @@ const mapNodetoNode = (node: MapNode): Node => {
   };
 };
 
+
 function App() {
   const nodeTypes = useMemo(() => ({ custom: CustomNode }), []);
   const [nodes, setNodes, onNodesChange] =
@@ -104,25 +104,30 @@ function App() {
   );
 
   return (
-    <div className="App">
-      <ReactFlow
-        nodes={nodes}
-        nodeTypes={nodeTypes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        fitView
-        fitViewOptions={fitViewOptions}
-      ></ReactFlow>
-      <div onClick={() => setRecording((r) => !r)}>
-        {recording ? (
-          <MicPaused style={{ width: 80, height: 80 }} />
-        ) : (
-          <DefaultMic style={{ width: 80, height: 80 }} />
-        )}
+    <ChakraProvider>
+      <div className="App">
+        <ReactFlow
+          nodes={nodes}
+          nodeTypes={nodeTypes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          fitView
+          fitViewOptions={fitViewOptions}
+          style={{ backgroundColor: "#FFFAEF" }}
+        >
+          <Background color="#FFD39E"/>
+        </ReactFlow>
+        <div onClick={() => setRecording((r) => !r)}>
+          {recording ? (
+            <MicPaused style={{ width: 80, height: 80 }} />
+          ) : (
+            <DefaultMic style={{ width: 80, height: 80 }} />
+          )}
+        </div>
       </div>
-    </div>
+    </ChakraProvider>
   );
 }
 
