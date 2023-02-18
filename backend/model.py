@@ -22,8 +22,8 @@ def get_embedding(text, model="text-embedding-ada-002"):
 
 
 def get_node_distance_from_similarity(similarity: float) -> tuple[int, int]:
-    max_dist = 50
-    min_dist = 10
+    max_dist = 500
+    min_dist = 100
     # scale a number from 0 to 1 to 50 to 10
     distance = round(
         (max_dist - min_dist) * similarity + min_dist
