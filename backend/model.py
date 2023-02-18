@@ -1,10 +1,41 @@
 import json
+import random
+import math
 from numpy.linalg import norm
 from numpy import dot
 import os
 import openai
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+
+def rotate_matrix(x, y, angle, x_shift=0, y_shift=0, units="DEGREES"):
+    """
+    Rotates a point in the xy-plane counterclockwise through an angle about the origin
+    https://en.wikipedia.org/wiki/Rotation_matrix
+    :param x: x coordinate
+    :param y: y coordinate
+    :param x_shift: x-axis shift from origin (0, 0)
+    :param y_shift: y-axis shift from origin (0, 0)
+    :param angle: The rotation angle in degrees
+    :param units: DEGREES (default) or RADIANS
+    :return: Tuple of rotated x and y
+    """
+
+    # Shift to origin (0,0)
+    x = x - x_shift
+    y = y - y_shift
+
+    # Convert degrees to radians
+    if units == "DEGREES":
+        angle = math.radians(angle)
+
+    # Rotation matrix multiplication to get rotated x & y
+    xr = (x * math.cos(angle)) - (y * math.sin(angle)) + x_shift
+    yr = (x * math.sin(angle)) + (y * math.cos(angle)) + y_shift
+
+    return xr, yr
+
 
 # Text processing helper functions
 def cosine_similarity(a, b):
@@ -22,13 +53,16 @@ def get_embedding(text, model="text-embedding-ada-002"):
 
 
 def get_node_distance_from_similarity(similarity: float) -> tuple[int, int]:
-    max_dist = 500
+    max_dist = 300
     min_dist = 100
     # scale a number from 0 to 1 to 50 to 10
     distance = round(
         (max_dist - min_dist) * similarity + min_dist
     )  # TODO: maybe better distance instead of x = y
-    return (distance, distance)
+
+    (x, y) = rotate_matrix(distance, distance, random.randint(0, 360))
+
+    return (x, y)
 
 
 # Node as json { keyword: string, position: {x: int, y: int}, data: { sentence: string } }
@@ -101,8 +135,11 @@ class Graph:
 CREATION_THRESHOLD = 0.5  # Threshold for adding a new node
 COLLAPSE_THRESHOLD = 0.8  # Threshold for collapsing two nodes
 
+edge_count = 0
+
 
 def add_sentence_node(sentence: str, graph: Graph):
+    global edge_count
     sentence_embedding = get_embedding(sentence)
 
     for node in graph.get_nodes():
@@ -139,14 +176,16 @@ def add_sentence_node(sentence: str, graph: Graph):
             max_node = node
 
     (delta_x, delta_y) = get_node_distance_from_similarity(max_similarity)
+    print(edge_count)
+    edge_count += 1
     if max_similarity < CREATION_THRESHOLD or max_node is None:
         print("new node to root")
         (x, y) = (delta_x, delta_y)
-        edge = Edge(0, "root", keyword, {"strength": 1})
+        edge = Edge(edge_count, "root", keyword, {"strength": 1})
     else:
         print("new node to ", max_node.keyword, " with similarity ", max_similarity)
         (x, y) = (max_node.position["x"] + delta_x, max_node.position["y"] + delta_y)
-        edge = Edge(0, max_node.keyword, keyword, {"strength": max_similarity})
+        edge = Edge(edge_count, max_node.keyword, keyword, {"strength": max_similarity})
 
     node = Node(keyword, {"x": x, "y": y}, [sentence], keyword_embedding)
     graph.add_node(node)
