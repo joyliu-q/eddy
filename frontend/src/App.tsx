@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { CustomNode, CustomNodeData } from "./components/Node";
 import { useCallback, useMemo } from "react";
-import { Button, ChakraProvider } from "@chakra-ui/react";
+import { Button, ChakraProvider, Input } from "@chakra-ui/react";
 import ReactFlow, {
   Background,
   useNodesState,
@@ -19,19 +19,8 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import { RecordNode } from "./components/RecordNode";
 import { addSentence } from "./utils/api";
+import { MapNode, NodeType } from "./types";
 
-enum NodeType {
-  Record = "record",
-  Custom = "custom",
-}
-
-interface MapNode extends Node {
-  keyword: string;
-  type: NodeType;
-  data: {
-    sentences: string[];
-  };
-}
 const initialNodes: MapNode[] = [
   {
     id: "root",
@@ -41,14 +30,6 @@ const initialNodes: MapNode[] = [
     position: { x: 0, y: 0 },
     data: {
       sentences: [],
-    },
-  },
-  {
-    id: "Hackathons",
-    type: "custom",
-    position: { x: 0, y: 100 },
-    data: {
-      sentences: ["I love building at treehacks.", "Hackathons are awesome!"],
     },
   },
 ];
@@ -95,10 +76,12 @@ function App() {
   }, []);
 
   const addSentenceToGraph = useCallback(async (sentence: string) => {
-    const { edges, nodes } = await addSentence("Coding is the best");
+    const { edges, nodes } = await addSentence(sentence);
     updateGraph(nodes, edges);
   }, []);
 
+  // TODO: DELETE EXAMPLE
+  const [sentence, setSentence] = React.useState("");
   return (
     <ChakraProvider>
       <div className="App">
@@ -115,6 +98,12 @@ function App() {
           <Background color="#FFD39E" />
         </ReactFlow>
       </div>
+      <Input
+        value={sentence}
+        onChange={(e) => setSentence(e.target.value)}
+        placeholder="Enter a sentence here."
+      />
+      <Button onClick={() => addSentenceToGraph(sentence)}> Add</Button>
     </ChakraProvider>
   );
 }
