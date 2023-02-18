@@ -1,0 +1,15 @@
+.Node {
+    background-color: #fff;
+    border: .5px solid #8ecae6;
+    border-radius: 1em;
+    cursor: pointer;
+    display: inline-block;
+    font-size: .5rem;
+    text-align: center;
+    padding: 1em;
+}
+
+.Handle {
+ width: .25em;
+ 
+}

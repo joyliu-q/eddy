@@ -1,7 +1,7 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { useCallback } from "react";
+import { CustomNode } from "./components/Node";
+import { useCallback, useMemo } from "react";
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -17,8 +17,8 @@ import ReactFlow, {
 // 👇 you need to import the reactflow styles
 import "reactflow/dist/style.css";
 const initialNodes: Node[] = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
-  { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
+  { id: "1", type: "custom", position: { x: 0, y: 0 }, data: { label: "1" } },
+  { id: "2", type: "custom", position: { x: 0, y: 100 }, data: { label: "2" } },
 ];
 const initialEdges: Edge[] = [{ id: "e1-2", source: "1", target: "2" }];
 const fitViewOptions: FitViewOptions = {
@@ -32,6 +32,7 @@ function App() {
     (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
     [setEdges]
   );
+  const nodeTypes = useMemo(() => ({ custom: CustomNode }), []);
 
   const addExpNode = () => {
     setNodes((nodes) => [
@@ -43,17 +44,14 @@ function App() {
     <div className="App">
       <ReactFlow
         nodes={nodes}
+        nodeTypes={nodeTypes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
         fitViewOptions={fitViewOptions}
-      >
-        <MiniMap />
-        <Controls />
-        <Background />
-      </ReactFlow>
+      ></ReactFlow>
       <button onClick={() => addExpNode()}>Click me!</button>
     </div>
   );
