@@ -6,6 +6,8 @@ export default function Navbar() {
     <Flex
       bg={THEME_COLORS.peach}
       w="100%"
+      position="absolute"
+      top={0}
       p={4}
       borderBottom={`2px solid ${THEME_COLORS.salmon}`}
       justifyContent="space-between"

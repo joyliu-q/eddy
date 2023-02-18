@@ -22,6 +22,7 @@ import { addSentence } from "./utils/api";
 import { MapNode, NodeType } from "./types";
 
 import Navbar from "./components/Navbar";
+import AboutPage from "./pages/AboutPage";
 
 const initialNodes: MapNode[] = [
   {
@@ -88,25 +89,8 @@ function App() {
     <ChakraProvider>
       <div className="App">
         <Navbar />
-        <ReactFlow
-          nodes={nodes}
-          nodeTypes={nodeTypes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          fitView
-          fitViewOptions={fitViewOptions}
-        >
-          <Background color="#FFD39E" />
-        </ReactFlow>
+        <AboutPage/>
       </div>
-      <Input
-        value={sentence}
-        onChange={(e) => setSentence(e.target.value)}
-        placeholder="Enter a sentence here."
-      />
-      <Button onClick={() => addSentenceToGraph(sentence)}> Add</Button>
     </ChakraProvider>
   );
 }
