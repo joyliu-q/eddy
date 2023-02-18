@@ -33,14 +33,14 @@ const initialNodes: MapNode[] = [
       sentences: [],
     },
   },
-  // {
-  //   id: "Hackathons",
-  //   type: "custom",
-  //   position: { x: 0, y: 100 },
-  //   data: {
-  //     sentences: ["I love building at treehacks.", "Hackathons are awesome!"],
-  //   },
-  // },
+  {
+    id: "Hackathons",
+    type: "custom",
+    position: { x: 0, y: 100 },
+    data: {
+      sentences: ["I love building at treehacks.", "Hackathons are awesome!"],
+    },
+  },
 ];
 const initialEdges: Edge[] = [
   {
