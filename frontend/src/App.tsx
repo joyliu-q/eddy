@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { CustomNode, CustomNodeData } from "./components/Node";
 import { useCallback, useMemo } from "react";
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from "@chakra-ui/react";
 import ReactFlow, {
   Background,
   useNodesState,
@@ -63,7 +63,6 @@ const mapNodetoNode = (node: MapNode): Node => {
   };
 };
 
-
 function App() {
   const nodeTypes = useMemo(
     () => ({ custom: CustomNode, record: RecordNode }),
@@ -117,7 +116,7 @@ function App() {
           fitView
           fitViewOptions={fitViewOptions}
         >
-          <Background color="#FFD39E"/>
+          <Background color="#FFD39E" />
         </ReactFlow>
       </div>
     </ChakraProvider>
