@@ -1,8 +1,19 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Handle, Position } from "reactflow";
 import "./Node.css";
 
-export const CustomNode = ({ data }: { data: any }) => {
+export interface CustomNodeData {
+  sentences: string[];
+}
+
+export const CustomNode = ({
+  data,
+  id,
+}: {
+  data: CustomNodeData;
+  id: string;
+}) => {
+  const [collapsed, setCollapsed] = useState(false);
   const onChange = useCallback((evt: any) => {
     console.log(evt.target.value);
   }, []);
@@ -11,7 +22,22 @@ export const CustomNode = ({ data }: { data: any }) => {
     <>
       <Handle type="target" position={Position.Top} />
       <div className="Node">
-        <label htmlFor="text">{data.label}</label>
+        <div className="title">
+          <p>{id}</p>
+          <button
+            className="collapse-btn"
+            onClick={() => setCollapsed((a) => !a)}
+          >
+            ^
+          </button>
+        </div>
+        {!collapsed && (
+          <ul>
+            {data.sentences.map((sentence: string, index: number) => {
+              return <li key={index}>{sentence}</li>;
+            })}
+          </ul>
+        )}
       </div>
       <Handle
         className="Handle"

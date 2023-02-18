@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { CustomNode } from "./components/Node";
+import { CustomNode, CustomNodeData } from "./components/Node";
 import { useCallback, useMemo } from "react";
 import ReactFlow, {
   MiniMap,
@@ -22,21 +22,28 @@ import { ReactComponent as DefaultMic } from "./DefaultMic.svg";
 import { ReactComponent as MicPaused } from "./MicPaused.svg";
 interface MapNode extends Node {
   data: {
-    sentance: string;
+    sentences: string[];
   };
 }
 const initialNodes: MapNode[] = [
   {
-    id: "1",
+    id: "Hackathons",
     type: "custom",
     position: { x: 0, y: 0 },
-    data: { sentance: "I love building at treehacks." },
+    data: {
+      sentences: ["I love building at treehacks.", "Hackathons are awesome!"],
+    },
   },
   {
-    id: "2",
+    id: "Pets",
     type: "custom",
     position: { x: 0, y: 100 },
-    data: { sentance: "hackathons are quite a crazy experince" },
+    data: {
+      sentences: [
+        "I like pets and I cannot lie",
+        "Cat's are cool and so are dogs",
+      ],
+    },
   },
 ];
 const initialEdges: Edge[] = [
@@ -56,13 +63,14 @@ const mapNodetoNode = (node: MapNode): Node => {
     id: node.id,
     type: node.type,
     position: node.position,
-    data: { label: node.data.id, sentance: node.data.sentance },
+    data: { label: node.id, sentances: node.data.sentences },
   };
 };
 
 function App() {
   const nodeTypes = useMemo(() => ({ custom: CustomNode }), []);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] =
+    useNodesState<CustomNodeData>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [recording, setRecording] = React.useState(false);
 
