@@ -10,6 +10,7 @@ import {
   StackDivider,
   Text,
   VStack,
+  Icon,
 } from "@chakra-ui/react";
 import { Layout } from "../../components/Layout";
 import { THEME_COLORS } from "../../util";
@@ -20,9 +21,21 @@ export default function AboutPage() {
   return (
     <Layout>
       <Box>
-        <Flex>
-          <Heading>Eddy</Heading>
-        </Flex>
+      <Flex flexDir="column" width="100vw" bgColor={THEME_COLORS.peach} height="400px" maxHeight="100vh" justifyContent="space-between">
+        <Box position="relative" width="100%" p={4} textAlign="center" textColor={THEME_COLORS.salmon}>
+          <Flex justifyContent="center" alignItems="center">
+            <Icon viewBox="0 0 380 318" w="200px" h="200px">
+              <Logo  />
+            </Icon>
+            <Box p={2}/>
+            <Heading fontSize="8xl">
+              Eddy
+            </Heading>
+          </Flex>
+          <Text>Blah blah blahbadity blahbatah</Text>
+        </Box>
+        <Ripple />
+      </Flex>
         <Container maxW="container.lg">
           <VStack spacing="4">
             <Card bgColor={THEME_COLORS.yellow}>
