@@ -28,7 +28,6 @@ export function ToolBar() {
       {
         link: "/list",
         icon: <Icon as={GoListUnordered} />,
-
       },
       {
         link: "/chat",
@@ -41,7 +40,13 @@ export function ToolBar() {
     ];
   }
   return (
-    <VStack position="absolute" top="20px" left="20px" zIndex="100" spacing="20px">
+    <VStack
+      position="absolute"
+      top="20px"
+      left="20px"
+      zIndex="100"
+      spacing="20px"
+    >
       {navLinks.map((link) => (
         <Link to={link.link}>
           <Flex
