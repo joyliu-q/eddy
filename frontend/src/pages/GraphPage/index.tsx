@@ -83,13 +83,13 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
         bgColor={THEME_COLORS.peach}
         flexDir="column"
         minW="500px"
-        minH="100vh"
+        h="100vh"
         display="flex"
         height="100%"
         justifyContent="center"
         alignItems="center"
       >
-        <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
+        <Card maxH="100vh" minH="100px" m="4" p="10" borderRadius="10px" boxShadow="lg">
           <LinkedHeader fontSize="2xl" id="summary">Summary</LinkedHeader>
           <Text>
             No summary available. Try using the mic and see what happens!
@@ -105,13 +105,13 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
       flexDir="column"
       width="50vw"
       maxW="500px"
-      minH="100vh"
+      h="100vh"
       display="flex"
       height="100%"
       justifyContent="center"
       alignItems="center"
     >
-      <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
+      <Card maxH="calc(100vh - 32px)" minH="100px" m="4" p="10" borderRadius="10px" boxShadow="lg">
         {nodes.map(node => {
           if (node.keyword === "root") {
             return (
