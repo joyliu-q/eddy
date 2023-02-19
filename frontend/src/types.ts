@@ -12,5 +12,5 @@ export interface CustomMapNodeData {
   keyword: string;
   sentences: string[];
   updateGraph?: (nodes: MapNode[], edges: Edge[]) => void;
-  setTranscript?: React.Dispatch<React.SetStateAction<string>>;
+  setTranscript?: (transcript: string) => void;
 }
