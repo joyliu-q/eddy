@@ -23,6 +23,7 @@ import { MapNode, NodeType } from "./types";
 
 import Navbar from "./components/Navbar";
 import { THEME_COLORS } from "./util";
+import AboutPage from "./pages/AboutPage";
 
 const initialNodes: MapNode[] = [
   {
@@ -87,30 +88,7 @@ function App() {
   const [sentence, setSentence] = React.useState("");
   return (
     <ChakraProvider>
-        <Navbar />
-        <Flex height="calc(100vh - 100px)" bgColor={THEME_COLORS.paleYellow}>
-          <ReactFlow
-              nodes={nodes}
-              nodeTypes={nodeTypes}
-              edges={edges}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={onConnect}
-              fitView
-              fitViewOptions={fitViewOptions}
-            >
-              <Background color="#FFD39E" />
-          </ReactFlow>
-      </Flex>        
-      <Flex height="100px">
-      <Input
-        value={sentence}
-        onChange={(e) => setSentence(e.target.value)}
-        placeholder="Enter a sentence here."
-      />
-        <Button onClick={() => addSentenceToGraph(sentence)}>Add</Button>
-      </Flex>
-      
+        <AboutPage />
     </ChakraProvider>
   );
 }
