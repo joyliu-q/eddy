@@ -1,4 +1,4 @@
-import { Center, Card, Flex, Heading, Link, Tag, Text } from "@chakra-ui/react";
+import { Center, Card, Flex, Heading, Link, Tag, Text, HStack } from "@chakra-ui/react";
 import { Edge, Node } from "reactflow";
 import { getTreeOrder } from "../../pages/GraphPage/util";
 import { CustomMapNodeData, MapNode } from "../../types";
@@ -131,7 +131,7 @@ export const GraphSummary = ({ nodes, edges }: GraphSummaryProps) => {
   // sort the nodes from the root node to the leaf nodes (as a tree)
   const orderedNodes = getTreeOrder(nodes as MapNode[], edges);
 
-  if (orderedNodes.length === 1) {
+  if (nodes.length === 1) {
     return (
       <Center
         bgColor={THEME_COLORS.peach}
@@ -165,7 +165,7 @@ export const GraphSummary = ({ nodes, edges }: GraphSummaryProps) => {
       alignItems="center"
     >
       <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
-        {orderedNodes.map((node) => {
+        {nodes.map((node) => {
           if (node.id === "root") {
             return (
               <Flex>
@@ -189,19 +189,21 @@ export const GraphSummary = ({ nodes, edges }: GraphSummaryProps) => {
               };
             });
           return (
-            <Flex>
+            <Flex flexDir="column">
               <LinkedHeader id={keyword}>{keyword}</LinkedHeader>
               <p>{sentences}</p>
-              {relatedTopics.map((topic) => (
-                // TODO: add hyperlinks to the other nodes
-                <Link href={`#${topic.keyword}`}>
-                  <Tag
-                    bgColor={topic.type === "child" ? "red.300" : "yellow.300"}
-                  >
-                    {topic.keyword}
-                  </Tag>
-                </Link>
-              ))}
+              <HStack>
+                {relatedTopics.map((topic) => (
+                  // TODO: add hyperlinks to the other nodes
+                  <Link href={`#${topic.keyword}`}>
+                    <Tag
+                      bgColor={topic.type === "child" ? "red.300" : "yellow.300"}
+                    >
+                      {topic.keyword}
+                    </Tag>
+                  </Link>
+                ))}
+              </HStack>
             </Flex>
           );
         })}
