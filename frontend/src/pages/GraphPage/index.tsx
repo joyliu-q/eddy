@@ -41,6 +41,9 @@ export enum DisplayMode {
   TaskMode = "task",
 }
 
+const LinkedHeader = ({ children, id }: { children: React.ReactNode; id: string }) =>
+  <Heading id={id}>{children}<a href={`#${id}`}>#</a></Heading>;
+
 const getSummary = (nodes: MapNode[], edges: Edge[]) => {
   // For each node, get the sentence that is connected to it
   // sort the nodes from the root node to the leaf nodes (as a tree)
@@ -49,7 +52,7 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
   if (orderedNodes.length === 1) {
     return <Center bgColor={THEME_COLORS.peach} flexDir="column" minW="500px" minH="100vh" display="flex" height="100%" justifyContent="center" alignItems="center">
       <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
-        <Heading>Summary</Heading>
+        <LinkedHeader id="summary">Summary</LinkedHeader>
         <Text>
           No summary available. Try using the mic and see what happens!
         </Text>
@@ -58,12 +61,13 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
   }
 
   return (
-    <>
+    <Center bgColor={THEME_COLORS.peach} flexDir="column" minW="500px" minH="100vh" display="flex" height="100%" justifyContent="center" alignItems="center">
+      <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
       {
         orderedNodes.map((node) => {
           if (node.keyword === "root") {
             return <Flex>
-              <Heading>Summary</Heading>
+              <LinkedHeader id="summary">Summary</LinkedHeader>
             </Flex>;
           }
 
@@ -78,7 +82,7 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
           });
           return (
             <Flex>
-              <Heading id={keyword}>{keyword}</Heading>
+              <LinkedHeader id={keyword}>{keyword}</LinkedHeader>
               <p>{sentences}</p>
               {relatedTopics.map((topic) => (
                 // TODO: add hyperlinks to the other nodes
@@ -92,7 +96,8 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
           )
         })
       }
-    </>
+      </Card>
+    </Center>
   );
 }
 
