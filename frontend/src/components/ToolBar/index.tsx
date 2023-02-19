@@ -21,7 +21,7 @@ export function ToolBar() {
     {
       link: "/",
       icon: <ArrowBackIcon />,
-      onClick: () => { },
+      onClick: () => {},
     },
   ];
 
@@ -38,11 +38,6 @@ export function ToolBar() {
       onClick: () => setNavigationState(NAVIGATION_STATE.GRAPH),
     },
     {
-      link: "/chat",
-      icon: <ChatIcon />,
-      onClick: () => {},
-    },
-    {
       link: "/about",
       icon: <InfoIcon />,
       onClick: () => {},
@@ -54,11 +49,6 @@ export function ToolBar() {
       link: null,
       icon: <Icon as={GoListUnordered} />,
       onClick: () => setNavigationState(NAVIGATION_STATE.SUMMARY),
-    },
-    {
-      link: "/chat",
-      icon: <ChatIcon />,
-      onClick: () => {},
     },
     {
       link: "/about",

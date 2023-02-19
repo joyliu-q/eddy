@@ -42,7 +42,7 @@ export const LiveTranscript = ({
         />{" "} */}
         <Box
           overflow={"hidden"}
-          style={{ width: 300, whiteSpace: "nowrap", direction: "rtl" }}
+          style={{ width: 300, whiteSpace: "nowrap" }}
           textAlign="right"
           ref={el}
         ></Box>

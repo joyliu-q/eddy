@@ -16,8 +16,7 @@ import { RecordNode } from "../../components/RecordNode";
 import { CustomMapNodeData, MapNode, NodeType } from "../../types";
 import { Layout } from "../../components/Layout";
 import { addSentenceChunk, getGraph } from "../../utils/api";
-import { Card, Center, Flex, Heading, Link, Tag, Text } from "@chakra-ui/react";
-import { THEME_COLORS } from "../../util";
+import { Flex, Text } from "@chakra-ui/react";
 import { LiveTranscript } from "../../components/LiveTranscript";
 
 // import { getTreeOrder } from "./util";
@@ -58,10 +57,6 @@ function GraphPage() {
   const updateTranscript = (transcript: string) => {
     setTranscript(transcript);
     console.log("UPDATING TRANSCRIPT", transcript);
-    // const response = await addSentenceChunk(transcript);
-    // const { nodes, edges } = response.data;
-    // setNodes(nodes.map(mapNodeToNode));
-    // setEdges(edges);
   };
   const nodeTypes = useMemo(
     () => ({ custom: CustomNode, record: RecordNode }),
@@ -148,14 +143,14 @@ function GraphPage() {
         left="50%"
         transform="translateX(-50%)"
       />
-      <Text
+      {/* <Text
         position="absolute"
         bottom="10px"
         left="50%"
         transform="translateX(-50%)"
       >
         {transcript}
-      </Text>
+      </Text> */}
     </>
   );
 }
