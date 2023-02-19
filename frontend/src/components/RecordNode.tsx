@@ -6,7 +6,7 @@ export const RecordNode = () => {
   const [recording, setRecording] = useState(false);
   return (
     <>
-      <Handle type="target" position={Position.Top} />
+      <Handle type="target" position={Position.Top} style={{ top: -3 }} />
       <div onClick={() => setRecording((r) => !r)}>
         {recording ? (
           <MicPaused style={{ width: 80, height: 80 }} />
@@ -19,6 +19,7 @@ export const RecordNode = () => {
         type="source"
         position={Position.Bottom}
         id="a"
+        style={{ bottom: -3 }}
       />
     </>
   );
