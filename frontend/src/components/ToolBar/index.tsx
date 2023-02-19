@@ -16,11 +16,28 @@ export function ToolBar() {
   // Check if the current pathname is '/about'
   let navLinks: NavLink[];
   const isOnAboutPage = location.pathname === "/about";
+  const isOnSummaryPage = location.pathname === "/list";
   if (isOnAboutPage) {
     navLinks = [
       {
         link: "/",
         icon: <ArrowBackIcon />,
+      },
+    ];
+  }
+  if (isOnSummaryPage) {
+    navLinks = [
+      {
+        link: "/",
+        icon: <ArrowBackIcon />,
+      },
+      {
+        link: "/chat",
+        icon: <ChatIcon />,
+      },
+      {
+        link: "/about",
+        icon: <InfoIcon />,
       },
     ];
   } else {
