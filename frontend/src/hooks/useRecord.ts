@@ -8,9 +8,11 @@ const useRecord = (updateGraph: (nodes: any, edges: any) => void) => {
     startRecording,
     stopRecording,
     mediaBlobUrl,
-    status,
-    previewAudioStream,
-  } = useReactMediaRecorder({ audio: true });
+  } = useReactMediaRecorder({
+    audio: {
+      sampleRate: 16000
+    }
+  });
 
   const [recording, setRecording] = useState<boolean>(false);
 

@@ -19,10 +19,6 @@ const router = createBrowserRouter([
     element: <AboutPage />,
   },
   {
-    path: "/list",
-    element: <GraphPage mode={DisplayMode.TaskMode} />,
-  },
-  {
     path: "/transcript",
     element: <LiveTranscript />,
   },

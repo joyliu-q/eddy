@@ -138,7 +138,8 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
   );
 };
 
-function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
+function GraphPage() {
+  const [mode, setMode] = React.useState<DisplayMode>(DisplayMode.TaskMode);
   const nodeTypes = useMemo(
     () => ({ custom: CustomNode, record: RecordNode }),
     []
@@ -178,12 +179,12 @@ function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
 
   useEffect(() => {
     setSummary(getSummary(nodes as any, edges));
-  }, []);
+  }, [nodes, edges, mode]);
 
   return (
-    <Layout>
+    <Layout onSwitchMode={() => setMode(mode === DisplayMode.GraphMode ? DisplayMode.TaskMode : DisplayMode.GraphMode)}>
       <Flex justifyContent={"space-between"}>
-        {mode === DisplayMode.TaskMode && summary}
+        {mode === DisplayMode.TaskMode && <>{summary}</>}
         <Flex
           textAlign={"center"}
           width={
