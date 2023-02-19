@@ -124,6 +124,7 @@ function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
       },
     },
   ];
+  const [summary, setSummary] = React.useState<React.ReactNode>(null);
   const [nodes, setNodes, onNodesChange] =
     useNodesState<CustomNodeData>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -136,6 +137,7 @@ function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
   const addSentenceToGraph = useCallback(async (sentence: string) => {
     const { edges, nodes } = await addSentenceChunk(sentence);
     updateGraph(nodes, edges);
+    setSummary(getSummary(nodes as any, edges));
   }, []);
 
   return (
@@ -143,7 +145,7 @@ function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
       <Flex justifyContent={"space-between"}>
         {
           mode === DisplayMode.TaskMode && 
-            getSummary(nodes as any, edges)
+            summary
         }
         <Flex
           textAlign={'center'} 
