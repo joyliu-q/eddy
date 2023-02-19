@@ -9,11 +9,32 @@
   animation: scaleIn 2.5s infinite cubic-bezier(.45, .12, .52, .85);
 }
 
+.mic {
+  border-radius: 50%;
+  transition: all .2s ease-in-out;
+}
+
+.mic:hover {
+  transform: scale(.95);
+}
+
 .container {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+}
+
+@keyframes shrink {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(.95);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes scaleIn {
