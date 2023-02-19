@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Layout } from "../../components/Layout";
 import { THEME_COLORS } from "../../util";
-import Logo, { SimpleLogo } from "./Logo";
+import Logo from "./Logo";
 import Ripple from "./Ripple";
 import { ReactComponent as DefaultMic } from "../../components/DefaultMic.svg";
 
