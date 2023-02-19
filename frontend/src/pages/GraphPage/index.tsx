@@ -14,9 +14,13 @@ import ReactFlow, {
 // 👇 you need to import the reactflow styles
 import "reactflow/dist/style.css";
 import { RecordNode } from "../../components/RecordNode";
+<<<<<<< HEAD
 import { addSentenceChunk } from "../../utils/api";
+=======
+>>>>>>> cc941489efe384b96f21bfa3a5fcbef890de1e73
 import { MapNode, NodeType } from "../../types";
 import { Layout } from "../../components/Layout";
+import { addSentenceChunk } from "../../utils/api";
 
 const initialNodes: MapNode[] = [
   {
