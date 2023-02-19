@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./GraphPage.css";
 import { CustomNode, CustomNodeData } from "../../components/Node";
 import { useCallback, useMemo } from "react";
@@ -139,9 +139,9 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
   );
 };
 
-function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
+function GraphPage() {
   const [transcript, setTranscript] = React.useState<string>("");
-
+  const [mode, setMode] = React.useState<DisplayMode>(DisplayMode.TaskMode);
   const nodeTypes = useMemo(
     () => ({ custom: CustomNode, record: RecordNode }),
     []
@@ -164,6 +164,7 @@ function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
       },
     },
   ];
+  const [summary, setSummary] = React.useState<React.ReactNode>(null);
   const [nodes, setNodes, onNodesChange] =
     useNodesState<CustomNodeData>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -176,16 +177,31 @@ function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
   const addSentenceToGraph = useCallback(async (sentence: string) => {
     const { edges, nodes } = await addSentenceChunk(sentence);
     updateGraph(nodes, edges);
+    setSummary(getSummary(nodes as any, edges));
   }, []);
 
+  useEffect(() => {
+    setSummary(getSummary(nodes as any, edges));
+  }, [nodes, edges, mode]);
+
   return (
-    <Layout>
+    <Layout
+      onSwitchMode={() =>
+        setMode(
+          mode === DisplayMode.GraphMode
+            ? DisplayMode.TaskMode
+            : DisplayMode.GraphMode
+        )
+      }
+    >
       <Flex justifyContent={"space-between"}>
-        {mode === DisplayMode.TaskMode && getSummary(nodes as any, edges)}
+        {mode === DisplayMode.TaskMode && <>{summary}</>}
         <Flex
           textAlign={"center"}
           width={
-            mode === DisplayMode.TaskMode ? "calc(100vw - 500px)" : "100vw"
+            mode === DisplayMode.TaskMode && summary
+              ? "calc(100vw - 500px)"
+              : "100vw"
           }
           height="100vh"
           flexDir="column"
