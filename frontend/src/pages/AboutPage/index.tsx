@@ -60,6 +60,7 @@ export default function AboutPage() {
               <Button
                 size={"lg"}
                 width={"max-content"}
+                _hover={{ background: THEME_COLORS.yellow }}
                 color={THEME_COLORS.salmon}
                 background={THEME_COLORS.eggshell}
                 borderRadius={20}
@@ -177,6 +178,7 @@ export default function AboutPage() {
               paddingY={8}
               colorScheme="red"
               borderRadius="48px"
+              _hover={{ transform: "scale(.95)" }}
             >
               <DefaultMic
                 className="def-mic"
