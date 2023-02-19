@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
 import "./GraphPage.css";
-import { CustomNode, CustomNodeData } from "../../components/Node";
-import { useCallback, useMemo } from "react";
+import { CustomNode } from "../../components/Node";
+import { useCallback, useMemo, useState } from "react";
 import ReactFlow, {
   Background,
   useNodesState,
@@ -14,13 +13,14 @@ import ReactFlow, {
 // 👇 you need to import the reactflow styles
 import "reactflow/dist/style.css";
 import { RecordNode } from "../../components/RecordNode";
-import { MapNode, NodeType } from "../../types";
+import { CustomMapNodeData, MapNode, NodeType } from "../../types";
 import { Layout } from "../../components/Layout";
 import { addSentenceChunk } from "../../utils/api";
-import { Card, Center, Flex, Heading, Link, Tag, Text } from "@chakra-ui/react";
-import { THEME_COLORS } from "../../util";
-import { getTreeOrder } from "./util";
+import { Flex, Text } from "@chakra-ui/react";
 import { LiveTranscript } from "../../components/LiveTranscript";
+
+import { GraphSummary } from "../../components/GraphSummary";
+import { NAVIGATION_STATE, useNavigation } from "../../hooks/useNavigation";
 
 const initialEdges: Edge[] = [];
 const fitViewOptions: FitViewOptions = {
@@ -30,118 +30,16 @@ const fitViewOptions: FitViewOptions = {
 const mapNodeToNode = (node: any): MapNode => {
   return {
     id: node.keyword,
-    keyword: node.keyword,
     type: node.keyword === "root" ? NodeType.Record : NodeType.Custom,
     position: node.position,
-    data: { sentences: node.data.sentences },
+    data: { sentences: node.data.sentences, keyword: node.keyword },
   };
 };
 
-export enum DisplayMode {
-  GraphMode = "graph",
-  TaskMode = "task",
-}
-
-const LinkedHeader = ({
-  children,
-  id,
-}: {
-  children: React.ReactNode;
-  id: string;
-}) => (
-  <Heading id={id}>
-    {children}
-    <a href={`#${id}`}>#</a>
-  </Heading>
-);
-
-const getSummary = (nodes: MapNode[], edges: Edge[]) => {
-  // For each node, get the sentence that is connected to it
-  // sort the nodes from the root node to the leaf nodes (as a tree)
-  const orderedNodes = getTreeOrder(nodes, edges);
-
-  if (orderedNodes.length === 1) {
-    return (
-      <Center
-        bgColor={THEME_COLORS.peach}
-        flexDir="column"
-        minW="500px"
-        minH="100vh"
-        display="flex"
-        height="100%"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
-          <LinkedHeader id="summary">Summary</LinkedHeader>
-          <Text>
-            No summary available. Try using the mic and see what happens!
-          </Text>
-        </Card>
-      </Center>
-    );
-  }
-
-  return (
-    <Center
-      bgColor={THEME_COLORS.peach}
-      flexDir="column"
-      minW="500px"
-      minH="100vh"
-      display="flex"
-      height="100%"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
-        {orderedNodes.map((node) => {
-          if (node.keyword === "root") {
-            return (
-              <Flex>
-                <LinkedHeader id="summary">Summary</LinkedHeader>
-              </Flex>
-            );
-          }
-
-          const keyword = node.keyword;
-          const sentences = node.data.sentences;
-          const relatedTopics = edges
-            .filter(
-              (edge) => edge.source === node.id || edge.target === node.id
-            )
-            .map((edge) => {
-              const otherNodeId =
-                edge.source === node.id ? edge.target : edge.source;
-              return {
-                type: edge.source === node.id ? "child" : "parent",
-                keyword: nodes.find((n) => node.id === otherNodeId)?.keyword,
-              };
-            });
-          return (
-            <Flex>
-              <LinkedHeader id={keyword}>{keyword}</LinkedHeader>
-              <p>{sentences}</p>
-              {relatedTopics.map((topic) => (
-                // TODO: add hyperlinks to the other nodes
-                <Link href={`#${topic.keyword}`}>
-                  <Tag
-                    bgColor={topic.type === "child" ? "red.300" : "yellow.300"}
-                  >
-                    {topic.keyword}
-                  </Tag>
-                </Link>
-              ))}
-            </Flex>
-          );
-        })}
-      </Card>
-    </Center>
-  );
-};
-
 function GraphPage() {
-  const [transcript, setTranscript] = React.useState<string>("");
-  const [mode, setMode] = React.useState<DisplayMode>(DisplayMode.TaskMode);
+  const [transcript, setTranscript] = useState<string>("");
+  const { navigationState } = useNavigation();
+
   const nodeTypes = useMemo(
     () => ({ custom: CustomNode, record: RecordNode }),
     []
@@ -150,23 +48,23 @@ function GraphPage() {
     setNodes(nodes.map(mapNodeToNode));
     setEdges(edges);
   }, []);
+
   const initialNodes: MapNode[] = [
     {
       id: "root",
-      keyword: "root",
       type: NodeType.Record,
       draggable: false,
       position: { x: 0, y: 0 },
       data: {
+        keyword: "root",
         sentences: [],
         updateGraph,
         setTranscript,
       },
     },
   ];
-  const [summary, setSummary] = React.useState<React.ReactNode>(null);
   const [nodes, setNodes, onNodesChange] =
-    useNodesState<CustomNodeData>(initialNodes);
+    useNodesState<CustomMapNodeData>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
@@ -177,29 +75,18 @@ function GraphPage() {
   const addSentenceToGraph = useCallback(async (sentence: string) => {
     const { edges, nodes } = await addSentenceChunk(sentence);
     updateGraph(nodes, edges);
-    setSummary(getSummary(nodes as any, edges));
   }, []);
 
-  useEffect(() => {
-    setSummary(getSummary(nodes as any, edges));
-  }, [nodes, edges, mode]);
-
   return (
-    <Layout
-      onSwitchMode={() =>
-        setMode(
-          mode === DisplayMode.GraphMode
-            ? DisplayMode.TaskMode
-            : DisplayMode.GraphMode
-        )
-      }
-    >
+    <Layout>
       <Flex justifyContent={"space-between"}>
-        {mode === DisplayMode.TaskMode && <>{summary}</>}
+        {navigationState === NAVIGATION_STATE.SUMMARY && (
+          <GraphSummary nodes={nodes} edges={edges} />
+        )}
         <Flex
           textAlign={"center"}
           width={
-            mode === DisplayMode.TaskMode && summary
+            navigationState === NAVIGATION_STATE.SUMMARY
               ? "calc(100vw - 500px)"
               : "100vw"
           }
