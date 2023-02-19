@@ -7,6 +7,7 @@ import GraphPage, { DisplayMode } from "./pages/GraphPage";
 import AboutPage from "./pages/AboutPage";
 import { ChakraProvider } from "@chakra-ui/react";
 import NotFoundPage from "./pages/NotFoundPage";
+import { LiveTranscript } from "./components/LiveTranscript";
 
 const router = createBrowserRouter([
   {
@@ -22,9 +23,13 @@ const router = createBrowserRouter([
     element: <GraphPage mode={DisplayMode.TaskMode} />,
   },
   {
+    path: "/transcript",
+    element: <LiveTranscript />,
+  },
+  {
     path: "*",
     element: <NotFoundPage />,
-  }
+  },
 ]);
 
 const root = ReactDOM.createRoot(
