@@ -18,18 +18,6 @@ import { MapNode, NodeType } from "../../types";
 import { Layout } from "../../components/Layout";
 import { addSentenceChunk } from "../../utils/api";
 
-const initialNodes: MapNode[] = [
-  {
-    id: "root",
-    keyword: "root",
-    type: NodeType.Record,
-    draggable: false,
-    position: { x: 0, y: 0 },
-    data: {
-      sentences: [],
-    },
-  },
-];
 const initialEdges: Edge[] = [];
 const fitViewOptions: FitViewOptions = {
   padding: 0.2,
@@ -50,6 +38,23 @@ function GraphPage() {
     () => ({ custom: CustomNode, record: RecordNode }),
     []
   );
+  const updateGraph = useCallback((nodes: MapNode[], edges: Edge[]) => {
+    setNodes(nodes.map(mapNodeToNode));
+    setEdges(edges);
+  }, []);
+  const initialNodes: MapNode[] = [
+    {
+      id: "root",
+      keyword: "root",
+      type: NodeType.Record,
+      draggable: false,
+      position: { x: 0, y: 0 },
+      data: {
+        sentences: [],
+        updateGraph,
+      },
+    },
+  ];
   const [nodes, setNodes, onNodesChange] =
     useNodesState<CustomNodeData>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -58,11 +63,6 @@ function GraphPage() {
     (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
     [setEdges]
   );
-
-  const updateGraph = useCallback((nodes: MapNode[], edges: Edge[]) => {
-    setNodes(nodes.map(mapNodeToNode));
-    setEdges(edges);
-  }, []);
 
   const addSentenceToGraph = useCallback(async (sentence: string) => {
     const { edges, nodes } = await addSentenceChunk(sentence);

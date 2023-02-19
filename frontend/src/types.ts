@@ -1,4 +1,4 @@
-import { Node } from "reactflow";
+import { Edge, Node } from "reactflow";
 export enum NodeType {
   Record = "record",
   Custom = "custom",
@@ -9,5 +9,6 @@ export interface MapNode extends Node {
   type: NodeType;
   data: {
     sentences: string[];
+    updateGraph?: (nodes: MapNode[], edges: Edge[]) => void;
   };
 }

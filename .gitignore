@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 .mypy_cache/*
 node_modules/*
 backend/__pycache__/main.cpython-310.pyc
 backend/__pycache__/model.cpython-310.pyc
+=======
+.vscode/
+>>>>>>> scribe

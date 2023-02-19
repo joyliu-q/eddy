@@ -2,12 +2,28 @@ import { Handle, Position } from "reactflow";
 import { useCallback, useState } from "react";
 import { ReactComponent as DefaultMic } from "./DefaultMic.svg";
 import { ReactComponent as MicPaused } from "./MicPaused.svg";
-export const RecordNode = () => {
-  const [recording, setRecording] = useState(false);
+import useRecord from "../hooks/useRecord";
+export const RecordNode = ({
+  data: { updateGraph },
+}: {
+  data: {
+    updateGraph: (nodes: any[], edges: any[]) => void;
+  };
+}) => {
+  const { start, stop, recording } = useRecord(updateGraph);
+
   return (
     <>
       <Handle type="target" position={Position.Top} style={{ top: -3 }} />
-      <div onClick={() => setRecording((r) => !r)}>
+      <div
+        onClick={() => {
+          if (recording) {
+            stop();
+          } else {
+            start();
+          }
+        }}
+      >
         {recording ? (
           <MicPaused style={{ width: 80, height: 80 }} />
         ) : (
