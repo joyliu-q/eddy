@@ -1,4 +1,4 @@
-import { Center, Card, Flex, Heading, Link, Tag, Text, HStack } from "@chakra-ui/react";
+import { Center, Card, Flex, Heading, Link, Tag, Text, HStack, Image } from "@chakra-ui/react";
 import { Edge, Node } from "reactflow";
 import { getTreeOrder } from "../../pages/GraphPage/util";
 import { CustomMapNodeData, MapNode } from "../../types";
@@ -70,10 +70,11 @@ export const GraphSummary = ({ nodes, edges }: GraphSummaryProps) => {  // For e
         {...styles.bigDiv as any}
       >
         <Card {...styles.card} >
-          <LinkedHeader fontSize="2xl" id="summary">Summary</LinkedHeader>
+          <LinkedHeader fontSize="4xl" id="summary">Summary</LinkedHeader>
           <Text>
             No summary available. Try using the mic and see what happens!
           </Text>
+          <Image boxSize="400px" src="half-speech-bubble.png" alt="speech bubble" />
         </Card>
       </Center>
     );
