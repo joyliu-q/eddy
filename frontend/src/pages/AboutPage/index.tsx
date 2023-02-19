@@ -18,6 +18,7 @@ import { THEME_COLORS } from "../../util";
 import Logo from "./Logo";
 import Ripple from "./Ripple";
 import { ReactComponent as DefaultMic } from "../../components/DefaultMic.svg";
+import { Link } from "react-router-dom";
 
 export default function AboutPage() {
   const cardStyle = {
@@ -45,15 +46,28 @@ export default function AboutPage() {
             textColor={THEME_COLORS.salmon}
             flexDir="column"
             justifyContent={"end"}
+            alignItems="center"
           >
-            <Flex justifyContent="center" alignItems="center">
+            <Flex marginBottom={0} justifyContent="center" alignItems="center">
               <Icon viewBox="0 0 380 318" w="200px" h="200px">
                 <Logo />
               </Icon>
               <Box p={2} />
               <Heading fontSize="8xl">Eddy</Heading>
             </Flex>
-            <Text>Blah blah blahbadity blahbatah</Text>
+
+            <Link to={"/"} style={{ textDecoration: "none" }}>
+              <Button
+                size={"lg"}
+                width={"max-content"}
+                _hover={{ background: THEME_COLORS.yellow }}
+                color={THEME_COLORS.salmon}
+                background={THEME_COLORS.eggshell}
+                borderRadius={20}
+              >
+                Add Autopilot To Your Thoughts 🚀
+              </Button>
+            </Link>
           </Flex>
           <Ripple />
         </Flex>
@@ -63,7 +77,7 @@ export default function AboutPage() {
               <CardBody>
                 <Flex>
                   <Image boxSize="300px" src="ideation.png" alt="ideation" />
-                  <Stack p={4}  divider={<StackDivider />} spacing="4">
+                  <Stack p={4} divider={<StackDivider />} spacing="4">
                     <Box>
                       <Heading size="md">
                         Studies show we have 6200 thoughts per day (Nature)
@@ -117,7 +131,7 @@ export default function AboutPage() {
                   </Stack>
                 </CardBody>
               </Card>
-              <Box p={2}/>
+              <Box p={2} />
               <Card maxW="sm" {...cardStyle}>
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="4">
@@ -134,7 +148,7 @@ export default function AboutPage() {
                   </Stack>
                 </CardBody>
               </Card>
-              <Box p={2}/>
+              <Box p={2} />
               <Card maxW="sm" {...cardStyle}>
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="4">
@@ -150,21 +164,35 @@ export default function AboutPage() {
                 </CardBody>
               </Card>
             </Flex>
-            <Card {...cardStyle} width="100%">
-              <CardBody>
-
-                <Flex>
-                  <Button as="a" href="/" pl={0} display="flex" justifyContent="space-between" minHeight="100px" width="100%" size="lg" colorScheme="red" borderRadius="48px">
-                    <DefaultMic className="def-mic" style={{ width: 100, height: 100 }} />
-                    <Logo color={THEME_COLORS.salmon} alternateColor={THEME_COLORS.yellow} />
-                    <Heading width="100%" textAlign="center">
-                      Steer your stream of consciousness
-                    </Heading>
-                  </Button>
-                </Flex>
-              </CardBody>
-            </Card>
           </VStack>
+
+          <Flex marginY={16} alignItems={"center"} justifyContent={"center"}>
+            <Button
+              as="a"
+              href="/"
+              pl={0}
+              display="flex"
+              justifyContent="left"
+              minHeight="100px"
+              size="md"
+              paddingY={8}
+              colorScheme="red"
+              borderRadius="48px"
+              _hover={{ transform: "scale(.95)" }}
+            >
+              <DefaultMic
+                className="def-mic"
+                style={{ width: 100, height: 100 }}
+              />
+              <Logo
+                color={THEME_COLORS.salmon}
+                alternateColor={THEME_COLORS.yellow}
+              />
+              <Heading width="50%" marginLeft={4}>
+                Record.
+              </Heading>
+            </Button>
+          </Flex>
         </Container>
       </Box>
     </Layout>

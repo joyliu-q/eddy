@@ -16,12 +16,10 @@ import { RecordNode } from "../../components/RecordNode";
 import { CustomMapNodeData, MapNode, NodeType } from "../../types";
 import { Layout } from "../../components/Layout";
 import { addSentenceChunk, getGraph } from "../../utils/api";
-import { Card, Center, Flex, Heading, Link, Tag, Text } from "@chakra-ui/react";
-import { THEME_COLORS } from "../../util";
+import { Flex, Text } from "@chakra-ui/react";
 import { LiveTranscript } from "../../components/LiveTranscript";
 
 // import { getTreeOrder } from "./util";
-
 
 import { GraphSummary } from "../../components/GraphSummary";
 import { NAVIGATION_STATE, useNavigation } from "../../hooks/useNavigation";
@@ -44,15 +42,13 @@ function GraphPage() {
   const [transcript, setTranscript] = useState<string>("");
   const { navigationState } = useNavigation();
 
-  const updateTranscript = async(
-    transcript: string
-  ) => {
+  const updateTranscript = async (transcript: string) => {
     setTranscript(transcript);
     const response = await addSentenceChunk(transcript);
     const { nodes, edges } = response.data;
     setNodes(nodes.map(mapNodeToNode));
     setEdges(edges);
-  }
+  };
   const nodeTypes = useMemo(
     () => ({ custom: CustomNode, record: RecordNode }),
     []
@@ -85,7 +81,6 @@ function GraphPage() {
     [setEdges]
   );
 
-
   useEffect(() => {
     getGraph().then((graph) => {
       const { edges, nodes } = graph;
@@ -100,34 +95,33 @@ function GraphPage() {
           <GraphSummary nodes={nodes} edges={edges} />
         )}
         <Layout>
-        <Flex
-          textAlign={"center"}
-          width={
-            navigationState === NAVIGATION_STATE.SUMMARY
-              ? "calc(100vw - 500px)"
-              : "100vw"
-          }
-          height="100vh"
-          flexDir="column"
-          justifyContent={"center"}
-          alignItems="center"
-          backgroundColor="#FFF7E4"
-        >
-          <ReactFlow
-            nodes={nodes}
-            nodeTypes={nodeTypes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            fitView
-            fitViewOptions={fitViewOptions}
+          <Flex
+            textAlign={"center"}
+            width={
+              navigationState === NAVIGATION_STATE.SUMMARY
+                ? "calc(100vw - 500px)"
+                : "100vw"
+            }
+            height="100vh"
+            flexDir="column"
+            justifyContent={"center"}
+            alignItems="center"
+            backgroundColor="#FFF7E4"
           >
-            <Background color="#FFD39E" />
-          </ReactFlow>
+            <ReactFlow
+              nodes={nodes}
+              nodeTypes={nodeTypes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              fitView
+              fitViewOptions={fitViewOptions}
+            >
+              <Background color="#FFD39E" />
+            </ReactFlow>
           </Flex>
         </Layout>
-
       </Flex>
       <LiveTranscript
         transcript={transcript}
