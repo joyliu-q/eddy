@@ -2,10 +2,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useReactMediaRecorder } from "react-media-recorder";
 import { Edge } from "reactflow";
 import { MapNode } from "../types";
+import { addSentenceChunk } from "../utils/api";
 
 const TICK_LENGTH_MS = 2000;
+const TICK_LENGTH = 10;
 
-const useRecord = () => {
+const useRecord = (updateGraph: MapNode["data"]["updateGraph"]) => {
   const { startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder(
     {
       audio: true,
@@ -15,6 +17,10 @@ const useRecord = () => {
   const [blobs, setBlobs] = useState<Blob[]>([]);
   const [transcript, setTranscript] = useState("");
   const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    console.log("transcript change", transcript);
+  }, [transcript]);
 
   useEffect(() => {
     if (mediaBlobUrl) {
@@ -43,15 +49,37 @@ const useRecord = () => {
           "Access-Control-Allow-Origin": "*",
         },
       })
-        .then((res) => res.text())
+        .then((res) => res.json())
         .then((data) => {
-          setTranscript(data);
+          console.log(data);
+          setTranscript(data["text"]);
         });
     }
   }, [blobs]);
+
+  useEffect(() => {
+    if (!updateGraph) return;
+
+    if (tick >= TICK_LENGTH) {
+      console.log("big tick", tick);
+      const work = async () => {
+        const result = await addSentenceChunk(transcript);
+        console.log(result);
+
+        updateGraph(result.nodes, result.edges);
+      };
+      work();
+      setTranscript("");
+      setBlobs([]);
+      setTick(0);
+    }
+  }, [tick, updateGraph]);
+
   const start = () => {
     startRecording();
     setBlobs([]);
+    setTick(0);
+    setTranscript("");
 
     tickTimer.current = setInterval(() => {
       setTick((prev) => prev + 1);
@@ -65,6 +93,19 @@ const useRecord = () => {
     if (tickTimer.current) {
       clearInterval(tickTimer.current);
     }
+
+    if (!updateGraph) return;
+    console.log("stop", transcript);
+
+    const work = async () => {
+      const result = await addSentenceChunk(transcript);
+      console.log(result);
+
+      updateGraph(result.nodes, result.edges);
+    };
+
+    setTranscript("");
+    work();
   };
 
   return {

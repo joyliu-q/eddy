@@ -22,7 +22,6 @@ import { LiveTranscript } from "../../components/LiveTranscript";
 
 // import { getTreeOrder } from "./util";
 
-
 import { GraphSummary } from "../../components/GraphSummary";
 import { NAVIGATION_STATE, useNavigation } from "../../hooks/useNavigation";
 
@@ -31,12 +30,24 @@ const fitViewOptions: FitViewOptions = {
   padding: 0.2,
 };
 
-const mapNodeToNode = (node: any): MapNode => {
+const mapNodeToNode = (
+  node: any,
+  extras: {
+    updateGraph: MapNode["data"]["updateGraph"];
+    setTranscript: MapNode["data"]["setTranscript"];
+  }
+): MapNode => {
+  console.log(node);
   return {
     id: node.keyword,
     type: node.keyword === "root" ? NodeType.Record : NodeType.Custom,
     position: node.position,
-    data: { sentences: node.data.sentences, keyword: node.keyword },
+    data: {
+      keyword: node.keyword,
+      sentences: node.data.sentences,
+      updateGraph: extras.updateGraph,
+      setTranscript: extras.setTranscript,
+    },
   };
 };
 
@@ -44,21 +55,24 @@ function GraphPage() {
   const [transcript, setTranscript] = useState<string>("");
   const { navigationState } = useNavigation();
 
-  const updateTranscript = async(
-    transcript: string
-  ) => {
+  const updateTranscript = (transcript: string) => {
     setTranscript(transcript);
-    const response = await addSentenceChunk(transcript);
-    const { nodes, edges } = response.data;
-    setNodes(nodes.map(mapNodeToNode));
-    setEdges(edges);
-  }
+    console.log("UPDATING TRANSCRIPT", transcript);
+    // const response = await addSentenceChunk(transcript);
+    // const { nodes, edges } = response.data;
+    // setNodes(nodes.map(mapNodeToNode));
+    // setEdges(edges);
+  };
   const nodeTypes = useMemo(
     () => ({ custom: CustomNode, record: RecordNode }),
     []
   );
   const updateGraph = useCallback((nodes: MapNode[], edges: Edge[]) => {
-    setNodes(nodes.map(mapNodeToNode));
+    setNodes(
+      nodes.map((x) =>
+        mapNodeToNode(x, { updateGraph, setTranscript: updateTranscript })
+      )
+    );
     setEdges(edges);
   }, []);
 
@@ -85,13 +99,12 @@ function GraphPage() {
     [setEdges]
   );
 
-
   useEffect(() => {
     getGraph().then((graph) => {
       const { edges, nodes } = graph;
       updateGraph(nodes, edges);
     });
-  }, [transcript]);
+  }, [transcript, updateGraph]);
 
   return (
     <>
@@ -100,34 +113,33 @@ function GraphPage() {
           <GraphSummary nodes={nodes} edges={edges} />
         )}
         <Layout>
-        <Flex
-          textAlign={"center"}
-          width={
-            navigationState === NAVIGATION_STATE.SUMMARY
-              ? "calc(100vw - 500px)"
-              : "100vw"
-          }
-          height="100vh"
-          flexDir="column"
-          justifyContent={"center"}
-          alignItems="center"
-          backgroundColor="#FFF7E4"
-        >
-          <ReactFlow
-            nodes={nodes}
-            nodeTypes={nodeTypes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            fitView
-            fitViewOptions={fitViewOptions}
+          <Flex
+            textAlign={"center"}
+            width={
+              navigationState === NAVIGATION_STATE.SUMMARY
+                ? "calc(100vw - 500px)"
+                : "100vw"
+            }
+            height="100vh"
+            flexDir="column"
+            justifyContent={"center"}
+            alignItems="center"
+            backgroundColor="#FFF7E4"
           >
-            <Background color="#FFD39E" />
-          </ReactFlow>
+            <ReactFlow
+              nodes={nodes}
+              nodeTypes={nodeTypes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              fitView
+              fitViewOptions={fitViewOptions}
+            >
+              <Background color="#FFD39E" />
+            </ReactFlow>
           </Flex>
         </Layout>
-
       </Flex>
       <LiveTranscript
         transcript={transcript}
@@ -136,7 +148,12 @@ function GraphPage() {
         left="50%"
         transform="translateX(-50%)"
       />
-      <Text position="absolute" bottom="10px" left="10px">
+      <Text
+        position="absolute"
+        bottom="10px"
+        left="50%"
+        transform="translateX(-50%)"
+      >
         {transcript}
       </Text>
     </>

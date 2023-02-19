@@ -8,15 +8,17 @@ import { MapNode } from "../types";
 import "./RecordNode.css";
 
 export const RecordNode = ({
-  data: { setTranscript },
+  data: { updateGraph, setTranscript },
 }: {
   data: MapNode["data"];
 }) => {
-  const { start, stop, transcript } = useRecord();
+  const { start, stop, transcript } = useRecord(updateGraph);
   const [recording, setRecording] = useState(false);
 
   useEffect(() => {
+    console.log(transcript);
     if (setTranscript) {
+      console.log("CHANGING TRANSCRIPT");
       setTranscript(transcript);
     }
   }, [setTranscript, transcript]);
