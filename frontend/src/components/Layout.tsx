@@ -2,13 +2,12 @@ import { ToolBar } from "./ToolBar";
 
 type Props = {
   children?: React.ReactNode;
-  onSwitchMode?: () => void;
 };
 
-export const Layout: React.FC<Props> = ({children, onSwitchMode = () => {}}) => {
+export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <div>
-      <ToolBar onSwitchMode={onSwitchMode} />
+      <ToolBar />
       {children}
     </div>
   );

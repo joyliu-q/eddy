@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Icon, VStack, Flex } from "@chakra-ui/react";
 import { THEME_COLORS } from "../../util";
 import { ArrowBackIcon, ChatIcon, InfoIcon } from "@chakra-ui/icons";
 import { GoListUnordered } from "react-icons/go";
-import { useSearchParams } from 'react-router-dom'
+import { NAVIGATION_STATE, useNavigation } from "../../hooks/useNavigation";
 
 interface NavLink {
   link: string | null;
@@ -12,13 +12,11 @@ interface NavLink {
   onClick: () => void;
 }
 
-export function ToolBar({onSwitchMode}: {onSwitchMode: () => void}) {
+export function ToolBar() {
   const location = useLocation();
-  const [searchParams] = useSearchParams();
+  const { navigationState, setNavigationState } = useNavigation();
 
   // Check if the current pathname is '/about'
-  let navLinks: NavLink[];
-  const isOnAboutPage = location.pathname === "/about";
   const notFoundNavLinks: NavLink[] = [
     {
       link: "/",
@@ -37,13 +35,12 @@ export function ToolBar({onSwitchMode}: {onSwitchMode: () => void}) {
   const listNavLinks = [
     {
       icon: <ArrowBackIcon />,
-      onClick: onSwitchMode,
+      onClick: () => setNavigationState(NAVIGATION_STATE.GRAPH),
     },
     {
       link: "/chat",
       icon: <ChatIcon />,
       onClick: () => {},
-
     },
     {
       link: "/about",
@@ -51,12 +48,12 @@ export function ToolBar({onSwitchMode}: {onSwitchMode: () => void}) {
       onClick: () => {},
     },
   ];
-  
+
   const graphNavLinks = [
     {
       link: null,
       icon: <Icon as={GoListUnordered} />,
-      onClick: onSwitchMode,
+      onClick: () => setNavigationState(NAVIGATION_STATE.SUMMARY),
     },
     {
       link: "/chat",
@@ -69,7 +66,7 @@ export function ToolBar({onSwitchMode}: {onSwitchMode: () => void}) {
       onClick: () => {},
     },
   ];
-  
+
   return (
     <VStack
       position="absolute"
@@ -78,13 +75,41 @@ export function ToolBar({onSwitchMode}: {onSwitchMode: () => void}) {
       zIndex="100"
       spacing="20px"
     >
-      {(location.pathname === "/about" ? aboutNavLinks : searchParams.get("mode") === "list" ? listNavLinks : location.pathname === "/"? graphNavLinks: notFoundNavLinks).map((link) => (
-        
+      {(location.pathname === "/about"
+        ? aboutNavLinks
+        : navigationState === NAVIGATION_STATE.SUMMARY
+        ? listNavLinks
+        : location.pathname === "/"
+        ? graphNavLinks
+        : notFoundNavLinks
+      ).map((link) =>
         link.link ? (
           <Link to={link.link}>
+            <Flex
+              w="48px"
+              h="48px"
+              borderRadius="50%"
+              alignItems={"center"}
+              justifyContent={"center"}
+              boxShadow={`0 2px 4px ${THEME_COLORS.peach}`}
+              border={`2px solid ${THEME_COLORS.salmon}`}
+              textAlign="center"
+              lineHeight="50px"
+              fontSize="24px"
+              color={THEME_COLORS.salmon}
+              _hover={{
+                backgroundColor: THEME_COLORS.salmon,
+                color: THEME_COLORS.eggshell,
+              }}
+            >
+              {link.icon}
+            </Flex>
+          </Link>
+        ) : (
           <Flex
-            w="48px"
-            h="48px"
+            onClick={() => link.onClick()}
+            w="50px"
+            h="50px"
             borderRadius="50%"
             alignItems={"center"}
             justifyContent={"center"}
@@ -101,30 +126,8 @@ export function ToolBar({onSwitchMode}: {onSwitchMode: () => void}) {
           >
             {link.icon}
           </Flex>
-        </Link>
-        ) : (
-            <Flex
-              onClick={() => link.onClick()}
-              w="50px"
-              h="50px"
-              borderRadius="50%"
-              alignItems={"center"}
-              justifyContent={"center"}
-              boxShadow={`0 2px 4px ${THEME_COLORS.peach}`}
-              border={`2px solid ${THEME_COLORS.salmon}`}
-              textAlign="center"
-              lineHeight="50px"
-              fontSize="24px"
-              color={THEME_COLORS.salmon}
-              _hover={{
-                backgroundColor: THEME_COLORS.salmon,
-                color: THEME_COLORS.eggshell,
-              }}
-           >
-              {link.icon}
-            </Flex>
-          )
-      ))}
+        )
+      )}
     </VStack>
   );
 }

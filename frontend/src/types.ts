@@ -5,11 +5,12 @@ export enum NodeType {
 }
 
 export interface MapNode extends Node {
-  keyword: string;
   type: NodeType;
-  data: {
-    sentences: string[];
-    updateGraph?: (nodes: MapNode[], edges: Edge[]) => void;
-    setTranscript?: (transcript: string) => void;
-  };
+  data: CustomMapNodeData;
+}
+export interface CustomMapNodeData {
+  keyword: string;
+  sentences: string[];
+  updateGraph?: (nodes: MapNode[], edges: Edge[]) => void;
+  setTranscript?: React.Dispatch<React.SetStateAction<string>>;
 }
