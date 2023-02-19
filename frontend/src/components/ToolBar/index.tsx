@@ -55,7 +55,6 @@ export function ToolBar() {
             borderRadius="50%"
             alignItems={"center"}
             justifyContent={"center"}
-            backgroundColor="white"
             boxShadow={`0 2px 4px ${THEME_COLORS.peach}`}
             border={`2px solid ${THEME_COLORS.salmon}`}
             textAlign="center"
@@ -64,7 +63,7 @@ export function ToolBar() {
             color={THEME_COLORS.salmon}
             _hover={{
               backgroundColor: THEME_COLORS.salmon,
-              color: THEME_COLORS.white,
+              color: THEME_COLORS.eggshell,
             }}
           >
             {link.icon}
