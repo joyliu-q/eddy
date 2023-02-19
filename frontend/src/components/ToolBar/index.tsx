@@ -65,8 +65,8 @@ export function ToolBar({onSwitchMode}: {onSwitchMode: () => void}) {
   return (
     <VStack
       position="absolute"
-      top="20px"
-      left="20px"
+      top="40px"
+      left="40px"
       zIndex="100"
       spacing="20px"
     >
@@ -75,8 +75,8 @@ export function ToolBar({onSwitchMode}: {onSwitchMode: () => void}) {
         link.link ? (
           <Link to={link.link}>
           <Flex
-            w="50px"
-            h="50px"
+            w="48px"
+            h="48px"
             borderRadius="50%"
             alignItems={"center"}
             justifyContent={"center"}
