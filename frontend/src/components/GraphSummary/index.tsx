@@ -38,10 +38,9 @@ const LinkedHeader = ({
       </Flex>
     </Link>
   );
-  }
+}
 
-const getSummary = (nodes: MapNode[], edges: Edge[]) => {
-  // For each node, get the sentence that is connected to it
+export const GraphSummary = ({ nodes, edges }: GraphSummaryProps) => {  // For each node, get the sentence that is connected to it
   // sort the nodes from the root node to the leaf nodes (as a tree)
   // const orderedNodes = getTreeOrder(nodes, edges);
 
@@ -101,91 +100,6 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
               return {
                 type: edge.source === node.id ? "child" : "parent",
                 keyword: nodes.find((n) => node.id === otherNodeId)?.data.keyword,
-              };
-            });
-          return (
-            <Flex flexDir="column">
-              <LinkedHeader id={keyword}>{keyword}</LinkedHeader>
-              <p>{sentences}</p>
-              {relatedTopics.map((topic) => (
-                // TODO: add hyperlinks to the other nodes
-                <Link href={`#${topic.keyword}`}>
-                  <Tag
-                    bgColor={topic.type === "child" ? "red.300" : "yellow.300"}
-                  >
-                    {topic.keyword}
-                  </Tag>
-                </Link>
-              ))}
-            </Flex>
-          );
-        })}
-      </Card>
-    </Center>
-  );
-};
-
-
-export const GraphSummary = ({ nodes, edges }: GraphSummaryProps) => {
-  // For each node, get the sentence that is connected to it
-  // sort the nodes from the root node to the leaf nodes (as a tree)
-  const orderedNodes = getTreeOrder(nodes as MapNode[], edges);
-
-  if (nodes.length === 1) {
-    return (
-      <Center
-        bgColor={THEME_COLORS.peach}
-        flexDir="column"
-        minW="500px"
-        minH="100vh"
-        display="flex"
-        height="100%"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
-          <LinkedHeader id="summary">Summary</LinkedHeader>
-          <Text>
-            No summary available. Try using the mic and see what happens!
-          </Text>
-        </Card>
-      </Center>
-    );
-  }
-
-  return (
-    <Center
-      bgColor={THEME_COLORS.peach}
-      flexDir="column"
-      minW="500px"
-      minH="100vh"
-      display="flex"
-      height="100%"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
-        {nodes.map((node) => {
-          if (node.id === "root") {
-            return (
-              <Flex>
-                <LinkedHeader id="summary">Summary</LinkedHeader>
-              </Flex>
-            );
-          }
-
-          const { keyword, sentences } = node.data;
-          const relatedTopics = edges
-            .filter(
-              (edge) => edge.source === node.id || edge.target === node.id
-            )
-            .map((edge) => {
-              const otherNodeId =
-                edge.source === node.id ? edge.target : edge.source;
-              return {
-                type: edge.source === node.id ? "child" : "parent",
-                keyword: nodes.find((n) => node.id === otherNodeId)?.data
-                  .keyword,
               };
             });
           return (
