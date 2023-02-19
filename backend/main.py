@@ -30,6 +30,7 @@ def add_sentence(sentence: str):
     add_sentence_node(sentence, graph)
     return graph.to_json()
 
+@app.post("/chunk")
 def process_sentence_chunk(chunk: str):
     sentences = nltk.sent_tokenize(chunk)
     for sentence in sentences:
@@ -41,4 +42,5 @@ async def scribe(audio: UploadFile = File(...)):
     content = await audio.read()
     transcript = transcribe_audio(content)
     print(f"Transcript: {transcript}")
-    return process_sentence_chunk(transcript["text"].strip())
+    return transcript['text'].strip()
+    # return process_sentence_chunk(transcript["text"].strip())

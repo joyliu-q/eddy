@@ -10,5 +10,6 @@ export interface MapNode extends Node {
   data: {
     sentences: string[];
     updateGraph?: (nodes: MapNode[], edges: Edge[]) => void;
+    setTranscript?: (transcript: string) => void;
   };
 }

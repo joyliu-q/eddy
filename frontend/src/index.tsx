@@ -24,7 +24,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/transcript",
-    element: <LiveTranscript />,
+    element: <LiveTranscript transcript="hello world" />,
   },
   {
     path: "*",

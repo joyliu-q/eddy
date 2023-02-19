@@ -1,17 +1,23 @@
 import { Handle, Position } from "reactflow";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ReactComponent as DefaultMic } from "./DefaultMic.svg";
 import { ReactComponent as MicPause } from "./MicPaused.svg";
 import useRecord from "../hooks/useRecord";
 import { Flex } from "@chakra-ui/react";
+import { MapNode } from "../types";
 export const RecordNode = ({
-  data: { updateGraph },
+  data: { setTranscript },
 }: {
-  data: {
-    updateGraph: (nodes: any[], edges: any[]) => void;
-  };
+  data: MapNode["data"];
 }) => {
-  const { start, stop, recording } = useRecord(updateGraph);
+  const { start, stop, transcript } = useRecord();
+  const [recording, setRecording] = useState(false);
+
+  useEffect(() => {
+    if (setTranscript) {
+      setTranscript(transcript);
+    }
+  }, [setTranscript, transcript]);
 
   return (
     <>
@@ -23,6 +29,8 @@ export const RecordNode = ({
           } else {
             start();
           }
+
+          setRecording(!recording);
         }}
       >
         {recording ? (

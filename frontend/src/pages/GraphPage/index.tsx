@@ -20,6 +20,7 @@ import { addSentenceChunk } from "../../utils/api";
 import { Card, Center, Flex, Heading, Link, Tag, Text } from "@chakra-ui/react";
 import { THEME_COLORS } from "../../util";
 import { getTreeOrder } from "./util";
+import { LiveTranscript } from "../../components/LiveTranscript";
 
 const initialEdges: Edge[] = [];
 const fitViewOptions: FitViewOptions = {
@@ -41,8 +42,18 @@ export enum DisplayMode {
   TaskMode = "task",
 }
 
-const LinkedHeader = ({ children, id }: { children: React.ReactNode; id: string }) =>
-  <Heading id={id}>{children}<a href={`#${id}`}>#</a></Heading>;
+const LinkedHeader = ({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id: string;
+}) => (
+  <Heading id={id}>
+    {children}
+    <a href={`#${id}`}>#</a>
+  </Heading>
+);
 
 const getSummary = (nodes: MapNode[], edges: Edge[]) => {
   // For each node, get the sentence that is connected to it
@@ -50,36 +61,62 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
   const orderedNodes = getTreeOrder(nodes, edges);
 
   if (orderedNodes.length === 1) {
-    return <Center bgColor={THEME_COLORS.peach} flexDir="column" minW="500px" minH="100vh" display="flex" height="100%" justifyContent="center" alignItems="center">
-      <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
-        <LinkedHeader id="summary">Summary</LinkedHeader>
-        <Text>
-          No summary available. Try using the mic and see what happens!
-        </Text>
-      </Card>
-    </Center>;
+    return (
+      <Center
+        bgColor={THEME_COLORS.peach}
+        flexDir="column"
+        minW="500px"
+        minH="100vh"
+        display="flex"
+        height="100%"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
+          <LinkedHeader id="summary">Summary</LinkedHeader>
+          <Text>
+            No summary available. Try using the mic and see what happens!
+          </Text>
+        </Card>
+      </Center>
+    );
   }
 
   return (
-    <Center bgColor={THEME_COLORS.peach} flexDir="column" minW="500px" minH="100vh" display="flex" height="100%" justifyContent="center" alignItems="center">
+    <Center
+      bgColor={THEME_COLORS.peach}
+      flexDir="column"
+      minW="500px"
+      minH="100vh"
+      display="flex"
+      height="100%"
+      justifyContent="center"
+      alignItems="center"
+    >
       <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
-      {
-        orderedNodes.map((node) => {
+        {orderedNodes.map((node) => {
           if (node.keyword === "root") {
-            return <Flex>
-              <LinkedHeader id="summary">Summary</LinkedHeader>
-            </Flex>;
+            return (
+              <Flex>
+                <LinkedHeader id="summary">Summary</LinkedHeader>
+              </Flex>
+            );
           }
 
           const keyword = node.keyword;
           const sentences = node.data.sentences;
-          const relatedTopics = edges.filter((edge) => edge.source === node.id || edge.target === node.id).map(edge => {
-            const otherNodeId = edge.source === node.id ? edge.target : edge.source;
-            return ({
-              type: edge.source === node.id ? "child" : "parent",
-              keyword: nodes.find(n => node.id === otherNodeId)?.keyword,
+          const relatedTopics = edges
+            .filter(
+              (edge) => edge.source === node.id || edge.target === node.id
+            )
+            .map((edge) => {
+              const otherNodeId =
+                edge.source === node.id ? edge.target : edge.source;
+              return {
+                type: edge.source === node.id ? "child" : "parent",
+                keyword: nodes.find((n) => node.id === otherNodeId)?.keyword,
+              };
             });
-          });
           return (
             <Flex>
               <LinkedHeader id={keyword}>{keyword}</LinkedHeader>
@@ -87,22 +124,24 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
               {relatedTopics.map((topic) => (
                 // TODO: add hyperlinks to the other nodes
                 <Link href={`#${topic.keyword}`}>
-                  <Tag bgColor={topic.type === "child" ? "red.300" : "yellow.300"}>
+                  <Tag
+                    bgColor={topic.type === "child" ? "red.300" : "yellow.300"}
+                  >
                     {topic.keyword}
                   </Tag>
                 </Link>
-                ))}
+              ))}
             </Flex>
-          )
-        })
-      }
+          );
+        })}
       </Card>
     </Center>
   );
-}
-
+};
 
 function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
+  const [transcript, setTranscript] = React.useState<string>("");
+
   const nodeTypes = useMemo(
     () => ({ custom: CustomNode, record: RecordNode }),
     []
@@ -121,6 +160,7 @@ function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
       data: {
         sentences: [],
         updateGraph,
+        setTranscript,
       },
     },
   ];
@@ -141,13 +181,12 @@ function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
   return (
     <Layout>
       <Flex justifyContent={"space-between"}>
-        {
-          mode === DisplayMode.TaskMode && 
-            getSummary(nodes as any, edges)
-        }
+        {mode === DisplayMode.TaskMode && getSummary(nodes as any, edges)}
         <Flex
-          textAlign={'center'} 
-          width={ mode === DisplayMode.TaskMode ? "calc(100vw - 500px)" : "100vw"}
+          textAlign={"center"}
+          width={
+            mode === DisplayMode.TaskMode ? "calc(100vw - 500px)" : "100vw"
+          }
           height="100vh"
           flexDir="column"
           justifyContent={"center"}
@@ -168,6 +207,16 @@ function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
           </ReactFlow>
         </Flex>
       </Flex>
+      <LiveTranscript
+        transcript={transcript}
+        position="absolute"
+        bottom="10px"
+        left="50%"
+        transform="translateX(-50%)"
+      />
+      <Text position="absolute" bottom="10px" left="10px">
+        {transcript}
+      </Text>
     </Layout>
   );
 }

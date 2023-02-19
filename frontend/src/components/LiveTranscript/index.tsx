@@ -1,9 +1,14 @@
-import { Box, Center, Flex } from "@chakra-ui/react";
+import { Box, BoxProps, Center, Flex } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import Typed from "typed.js";
 import "./index.css";
 
-export const LiveTranscript = () => {
+export const LiveTranscript = ({
+  transcript,
+  ...props
+}: BoxProps & {
+  transcript: string;
+}) => {
   // Create reference to store the DOM element containing the animation
   const el = React.useRef(null);
   // Create reference to store the Typed instance itself
@@ -11,9 +16,7 @@ export const LiveTranscript = () => {
 
   useEffect(() => {
     const options = {
-      strings: [
-        "Welcome to <b style='color: #ED8936'>Joymart</b>, Bienvenido a <b style='color: #ED8936'>Joymart</b>, 欢迎来到<b style='color: #ED8936'>Joymart</b>, Bienvenue chez <b style='color: #ED8936'>Joymart</b>",
-      ],
+      strings: [transcript],
       typeSpeed: 50,
     };
 
@@ -25,18 +28,18 @@ export const LiveTranscript = () => {
       // to prevent memory leaks
       typed.current?.destroy();
     };
-  }, []);
+  }, [transcript]);
 
   useEffect(() => typed.current?.start(), []);
   return (
-    <Center>
+    <Center {...props}>
       <Flex>
-        <Box
+        {/* <Box
           className="blur-box"
           position={"absolute"}
           width={"50px"}
           height={10}
-        />{" "}
+        />{" "} */}
         <Box
           overflow={"hidden"}
           style={{ width: 300, whiteSpace: "nowrap", direction: "rtl" }}
