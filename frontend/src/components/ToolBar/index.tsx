@@ -1,8 +1,9 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { VStack, Flex } from "@chakra-ui/react";
+import { Icon, VStack, Flex } from "@chakra-ui/react";
 import { THEME_COLORS } from "../../util";
 import { ArrowBackIcon, ChatIcon, InfoIcon } from "@chakra-ui/icons";
+import { GoListUnordered } from "react-icons/go";
 
 interface NavLink {
   link: string;
@@ -25,6 +26,11 @@ export function ToolBar() {
   } else {
     navLinks = [
       {
+        link: "/list",
+        icon: <Icon as={GoListUnordered} />,
+
+      },
+      {
         link: "/chat",
         icon: <ChatIcon />,
       },
@@ -35,7 +41,7 @@ export function ToolBar() {
     ];
   }
   return (
-    <VStack position="fixed" top="20px" left="20px" zIndex="100" spacing="20px">
+    <VStack position="absolute" top="20px" left="20px" zIndex="100" spacing="20px">
       {navLinks.map((link) => (
         <Link to={link.link}>
           <Flex
@@ -46,12 +52,13 @@ export function ToolBar() {
             justifyContent={"center"}
             backgroundColor="white"
             boxShadow={`0 2px 4px ${THEME_COLORS.peach}`}
+            border={`2px solid ${THEME_COLORS.salmon}`}
             textAlign="center"
             lineHeight="50px"
             fontSize="24px"
-            color={THEME_COLORS.peach}
+            color={THEME_COLORS.salmon}
             _hover={{
-              backgroundColor: THEME_COLORS.peach,
+              backgroundColor: THEME_COLORS.salmon,
               color: THEME_COLORS.white,
             }}
           >

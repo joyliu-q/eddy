@@ -1,12 +1,10 @@
 import {
-  Icon,
   Box,
   Card,
   CardBody,
   Container,
   Flex,
   Heading,
-  HStack,
   Image,
   Stack,
   StackDivider,

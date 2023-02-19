@@ -1,4 +1,3 @@
-import Navbar from "./Navbar";
 import { ToolBar } from "./ToolBar";
 
 type Props = {
