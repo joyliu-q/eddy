@@ -4,6 +4,7 @@ import { ReactComponent as DefaultMic } from "./DefaultMic.svg";
 import { ReactComponent as MicPause } from "./MicPaused.svg";
 import useRecord from "../hooks/useRecord";
 import { Flex } from "@chakra-ui/react";
+import "./RecordNode.css";
 export const RecordNode = ({
   data: { updateGraph },
 }: {
@@ -14,7 +15,7 @@ export const RecordNode = ({
   const { start, stop, recording } = useRecord(updateGraph);
 
   return (
-    <>
+    <div className="mic">
       <Handle type="target" position={Position.Top} style={{ top: -3 }} />
       <div
         onClick={() => {
@@ -46,9 +47,7 @@ export const RecordNode = ({
             <MicPause style={{ width: 80, height: 80 }} />
           </Flex>
         ) : (
-          <>
-            <DefaultMic style={{ width: 80, height: 80 }} />
-          </>
+          <DefaultMic className="def-mic" style={{ width: 80, height: 80 }} />
         )}
       </div>
       <Handle
@@ -58,6 +57,6 @@ export const RecordNode = ({
         id="a"
         style={{ bottom: -3 }}
       />
-    </>
+    </div>
   );
 };
