@@ -1,0 +1,59 @@
+.record-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  opacity:0;
+  z-index: -1;
+  position: absolute;
+  background-color: #FF5B5B;
+  animation: scaleIn 2.5s infinite cubic-bezier(.45, .12, .52, .85);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(.5, .5);
+    opacity: .5;
+  }
+
+  to {
+    transform: scale(1.5, 1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(3)
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1.5);
+  }
+
+}
+
+@keyframes pulse2 {
+  0% {
+    transform: scale(1.5);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1.5);
+  }
+
+}
