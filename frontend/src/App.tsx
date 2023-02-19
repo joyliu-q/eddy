@@ -22,6 +22,7 @@ import { addSentenceChunk } from "./utils/api";
 import { MapNode, NodeType } from "./types";
 
 import Navbar from "./components/Navbar";
+import { THEME_COLORS } from "./util";
 
 const initialNodes: MapNode[] = [
   {
@@ -87,7 +88,7 @@ function App() {
   return (
     <ChakraProvider>
         <Navbar />
-        <Flex height="calc(100vh - 100px)">
+        <Flex height="calc(100vh - 100px)" bgColor={THEME_COLORS.paleYellow}>
           <ReactFlow
               nodes={nodes}
               nodeTypes={nodeTypes}
