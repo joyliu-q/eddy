@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
-import GraphPage from "./pages/GraphPage";
+import GraphPage, { DisplayMode } from "./pages/GraphPage";
 import AboutPage from "./pages/AboutPage";
 import { ChakraProvider } from "@chakra-ui/react";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -16,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "/about",
     element: <AboutPage />,
+  },
+  {
+    path: "/list",
+    element: <GraphPage mode={DisplayMode.TaskMode} />,
   },
   {
     path: "*",

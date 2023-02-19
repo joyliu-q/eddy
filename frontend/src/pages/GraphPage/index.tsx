@@ -17,6 +17,9 @@ import { RecordNode } from "../../components/RecordNode";
 import { MapNode, NodeType } from "../../types";
 import { Layout } from "../../components/Layout";
 import { addSentenceChunk } from "../../utils/api";
+import { Card, Center, Flex, Heading, Link, Tag, Text } from "@chakra-ui/react";
+import { THEME_COLORS } from "../../util";
+import { getTreeOrder } from "./util";
 
 const initialEdges: Edge[] = [];
 const fitViewOptions: FitViewOptions = {
@@ -33,7 +36,68 @@ const mapNodeToNode = (node: any): MapNode => {
   };
 };
 
-function GraphPage() {
+export enum DisplayMode {
+  GraphMode = "graph",
+  TaskMode = "task",
+}
+
+const getSummary = (nodes: MapNode[], edges: Edge[]) => {
+  // For each node, get the sentence that is connected to it
+  // sort the nodes from the root node to the leaf nodes (as a tree)
+  const orderedNodes = getTreeOrder(nodes, edges);
+
+  if (orderedNodes.length === 1) {
+    return <Center bgColor={THEME_COLORS.peach} flexDir="column" minW="500px" minH="100vh" display="flex" height="100%" justifyContent="center" alignItems="center">
+      <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
+        <Heading>Summary</Heading>
+        <Text>
+          No summary available. Try using the mic and see what happens!
+        </Text>
+      </Card>
+    </Center>;
+  }
+
+  return (
+    <>
+      {
+        orderedNodes.map((node) => {
+          if (node.keyword === "root") {
+            return <Flex>
+              <Heading>Summary</Heading>
+            </Flex>;
+          }
+
+          const keyword = node.keyword;
+          const sentences = node.data.sentences;
+          const relatedTopics = edges.filter((edge) => edge.source === node.id || edge.target === node.id).map(edge => {
+            const otherNodeId = edge.source === node.id ? edge.target : edge.source;
+            return ({
+              type: edge.source === node.id ? "child" : "parent",
+              keyword: nodes.find(n => node.id === otherNodeId)?.keyword,
+            });
+          });
+          return (
+            <Flex>
+              <Heading id={keyword}>{keyword}</Heading>
+              <p>{sentences}</p>
+              {relatedTopics.map((topic) => (
+                // TODO: add hyperlinks to the other nodes
+                <Link href={`#${topic.keyword}`}>
+                  <Tag bgColor={topic.type === "child" ? "red.300" : "yellow.300"}>
+                    {topic.keyword}
+                  </Tag>
+                </Link>
+                ))}
+            </Flex>
+          )
+        })
+      }
+    </>
+  );
+}
+
+
+function GraphPage({ mode = DisplayMode.GraphMode }: { mode?: DisplayMode }) {
   const nodeTypes = useMemo(
     () => ({ custom: CustomNode, record: RecordNode }),
     []
@@ -71,20 +135,34 @@ function GraphPage() {
 
   return (
     <Layout>
-      <div className="graph">
-        <ReactFlow
-          nodes={nodes}
-          nodeTypes={nodeTypes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          fitView
-          fitViewOptions={fitViewOptions}
+      <Flex justifyContent={"space-between"}>
+        {
+          mode === DisplayMode.TaskMode && 
+            getSummary(nodes as any, edges)
+        }
+        <Flex
+          textAlign={'center'} 
+          width={ mode === DisplayMode.TaskMode ? "calc(100vw - 500px)" : "100vw"}
+          height="100vh"
+          flexDir="column"
+          justifyContent={"center"}
+          alignItems="center"
+          backgroundColor="#FFF7E4"
         >
-          <Background color="#FFD39E" />
-        </ReactFlow>
-      </div>
+          <ReactFlow
+            nodes={nodes}
+            nodeTypes={nodeTypes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            fitView
+            fitViewOptions={fitViewOptions}
+          >
+            <Background color="#FFD39E" />
+          </ReactFlow>
+        </Flex>
+      </Flex>
     </Layout>
   );
 }
