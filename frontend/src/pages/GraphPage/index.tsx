@@ -14,9 +14,9 @@ import ReactFlow, {
 // 👇 you need to import the reactflow styles
 import "reactflow/dist/style.css";
 import { RecordNode } from "../../components/RecordNode";
-import { addSentence } from "../../utils/api";
 import { MapNode, NodeType } from "../../types";
 import { Layout } from "../../components/Layout";
+import { addSentenceChunk } from "../../utils/api";
 
 const initialNodes: MapNode[] = [
   {
@@ -65,7 +65,7 @@ function GraphPage() {
   }, []);
 
   const addSentenceToGraph = useCallback(async (sentence: string) => {
-    const { edges, nodes } = await addSentence(sentence);
+    const { edges, nodes } = await addSentenceChunk(sentence);
     updateGraph(nodes, edges);
   }, []);
 
