@@ -11,13 +11,20 @@ import {
   Text,
   VStack,
   Icon,
+  Button,
 } from "@chakra-ui/react";
 import { Layout } from "../../components/Layout";
 import { THEME_COLORS } from "../../util";
-import Logo from "./Logo";
+import Logo, { SimpleLogo } from "./Logo";
 import Ripple from "./Ripple";
+import { ReactComponent as DefaultMic } from "../../components/DefaultMic.svg";
 
 export default function AboutPage() {
+  const cardStyle = {
+    bgColor: THEME_COLORS.yellow,
+    p: 4,
+  };
+
   return (
     <Layout>
       <Box>
@@ -29,12 +36,15 @@ export default function AboutPage() {
           maxHeight="100vh"
           justifyContent="space-between"
         >
-          <Box
+          <Flex
             position="relative"
             width="100%"
+            height="100%"
             p={4}
             textAlign="center"
             textColor={THEME_COLORS.salmon}
+            flexDir="column"
+            justifyContent={"end"}
           >
             <Flex justifyContent="center" alignItems="center">
               <Icon viewBox="0 0 380 318" w="200px" h="200px">
@@ -44,16 +54,16 @@ export default function AboutPage() {
               <Heading fontSize="8xl">Eddy</Heading>
             </Flex>
             <Text>Blah blah blahbadity blahbatah</Text>
-          </Box>
+          </Flex>
           <Ripple />
         </Flex>
         <Container maxW="container.lg">
           <VStack spacing="4">
-            <Card bgColor={THEME_COLORS.yellow}>
+            <Card {...cardStyle}>
               <CardBody>
                 <Flex>
-                  <Image boxSize="200px" src="ideation.png" alt="ideation" />
-                  <Stack divider={<StackDivider />} spacing="4">
+                  <Image boxSize="300px" src="ideation.png" alt="ideation" />
+                  <Stack p={4}  divider={<StackDivider />} spacing="4">
                     <Box>
                       <Heading size="md">
                         Studies show we have 6200 thoughts per day (Nature)
@@ -74,7 +84,7 @@ export default function AboutPage() {
                 </Flex>
               </CardBody>
             </Card>
-            <Card bgColor={THEME_COLORS.yellow}>
+            <Card {...cardStyle}>
               <CardBody>
                 <Stack divider={<StackDivider />} spacing="4">
                   <Box>
@@ -92,7 +102,7 @@ export default function AboutPage() {
               </CardBody>
             </Card>
             <Flex>
-              <Card maxW="sm" bgColor={THEME_COLORS.yellow}>
+              <Card maxW="sm" {...cardStyle}>
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="4">
                     <Box>
@@ -107,7 +117,8 @@ export default function AboutPage() {
                   </Stack>
                 </CardBody>
               </Card>
-              <Card maxW="sm" bgColor={THEME_COLORS.yellow}>
+              <Box p={2}/>
+              <Card maxW="sm" {...cardStyle}>
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="4">
                     <Box>
@@ -123,7 +134,8 @@ export default function AboutPage() {
                   </Stack>
                 </CardBody>
               </Card>
-              <Card maxW="sm" bgColor={THEME_COLORS.yellow}>
+              <Box p={2}/>
+              <Card maxW="sm" {...cardStyle}>
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="4">
                     <Box>
@@ -138,6 +150,20 @@ export default function AboutPage() {
                 </CardBody>
               </Card>
             </Flex>
+            <Card {...cardStyle} width="100%">
+              <CardBody>
+
+                <Flex>
+                  <Button as="a" href="/" pl={0} display="flex" justifyContent="space-between" minHeight="100px" width="100%" size="lg" colorScheme="red" borderRadius="48px">
+                    <DefaultMic className="def-mic" style={{ width: 100, height: 100 }} />
+                    <Logo color={THEME_COLORS.salmon} alternateColor={THEME_COLORS.yellow} />
+                    <Heading width="100%" textAlign="center">
+                      Steer your stream of consciousness
+                    </Heading>
+                  </Button>
+                </Flex>
+              </CardBody>
+            </Card>
           </VStack>
         </Container>
       </Box>
