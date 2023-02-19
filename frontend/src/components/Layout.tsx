@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { ToolBar } from "./ToolBar";
 
 type Props = {
@@ -6,9 +7,9 @@ type Props = {
 
 export const Layout: React.FC<Props> = ({ children }) => {
   return (
-    <div>
+    <Box position={"relative"}>
       <ToolBar />
       {children}
-    </div>
+    </Box>
   );
 };

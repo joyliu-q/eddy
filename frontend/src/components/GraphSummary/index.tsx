@@ -44,19 +44,32 @@ export const GraphSummary = ({ nodes, edges }: GraphSummaryProps) => {  // For e
   // sort the nodes from the root node to the leaf nodes (as a tree)
   // const orderedNodes = getTreeOrder(nodes, edges);
 
+  const styles = {
+    bigDiv: {
+      bgColor:THEME_COLORS.peach,
+      flexDir:"column",
+      minW:"500px",
+      height:"100vh",
+      display:"flex",
+      justifyContent:"center",
+      alignItems:"center"
+    },
+    card: {
+      height: "calc(100vh - 32px)",
+      minH: "400px",
+      m: "4",
+      p: "10",
+      borderRadius: "10px",
+      boxShadow: "lg",
+    }
+  }
+
   if (nodes.length === 1) {
     return (
       <Center
-        bgColor={THEME_COLORS.peach}
-        flexDir="column"
-        minW="500px"
-        h="100vh"
-        display="flex"
-        height="100%"
-        justifyContent="center"
-        alignItems="center"
+        {...styles.bigDiv as any}
       >
-        <Card maxH="100vh" minH="100px" m="4" p="10" borderRadius="10px" boxShadow="lg">
+        <Card {...styles.card} >
           <LinkedHeader fontSize="2xl" id="summary">Summary</LinkedHeader>
           <Text>
             No summary available. Try using the mic and see what happens!
@@ -68,17 +81,9 @@ export const GraphSummary = ({ nodes, edges }: GraphSummaryProps) => {  // For e
 
   return (
     <Center
-      bgColor={THEME_COLORS.peach}
-      flexDir="column"
-      width="50vw"
-      maxW="500px"
-      h="100vh"
-      display="flex"
-      height="100%"
-      justifyContent="center"
-      alignItems="center"
+      {...styles.bigDiv as any}
     >
-      <Card maxH="calc(100vh - 32px)" minH="100px" m="4" p="10" borderRadius="10px" boxShadow="lg">
+      <Card {...styles.card}>
         {nodes.map(node => {
           if (node.data.keyword === "root") {
             return (

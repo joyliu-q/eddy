@@ -94,11 +94,12 @@ function GraphPage() {
   }, [transcript]);
 
   return (
-    <Layout>
+    <>
       <Flex justifyContent={"space-between"}>
         {navigationState === NAVIGATION_STATE.SUMMARY && (
           <GraphSummary nodes={nodes} edges={edges} />
         )}
+        <Layout>
         <Flex
           textAlign={"center"}
           width={
@@ -124,7 +125,9 @@ function GraphPage() {
           >
             <Background color="#FFD39E" />
           </ReactFlow>
-        </Flex>
+          </Flex>
+        </Layout>
+
       </Flex>
       <LiveTranscript
         transcript={transcript}
@@ -136,7 +139,7 @@ function GraphPage() {
       <Text position="absolute" bottom="10px" left="10px">
         {transcript}
       </Text>
-    </Layout>
+    </>
   );
 }
 
