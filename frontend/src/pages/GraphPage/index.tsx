@@ -16,10 +16,11 @@ import "reactflow/dist/style.css";
 import { RecordNode } from "../../components/RecordNode";
 import { MapNode, NodeType } from "../../types";
 import { Layout } from "../../components/Layout";
-import { addSentenceChunk } from "../../utils/api";
+import { addSentenceChunk, getGraph } from "../../utils/api";
 import { Card, Center, Flex, Heading, Link, Tag, Text } from "@chakra-ui/react";
+import { LinkIcon } from "@chakra-ui/icons";
 import { THEME_COLORS } from "../../util";
-import { getTreeOrder } from "./util";
+// import { getTreeOrder } from "./util";
 import { LiveTranscript } from "../../components/LiveTranscript";
 
 const initialEdges: Edge[] = [];
@@ -43,24 +44,40 @@ export enum DisplayMode {
 }
 
 const LinkedHeader = ({
+  fontSize = "lg",
   children,
   id,
 }: {
+  fontSize?: string;
   children: React.ReactNode;
   id: string;
-}) => (
-  <Heading id={id}>
-    {children}
-    <a href={`#${id}`}>#</a>
-  </Heading>
-);
+  }) => {
+  return (
+    <Link href={`#${id}`} role="group" _hover={{
+      textDecor: 'none'
+    }}>
+      <Flex alignItems={"center"}>
+        <LinkIcon
+          position="relative"
+          visibility="hidden" marginLeft="-20px" boxSize={4}
+          _groupHover={{
+            visibility: 'visible'
+          }}
+        />
+        <Heading fontSize={fontSize} id={id}>
+          {children}
+        </Heading>
+      </Flex>
+    </Link>
+  );
+  }
 
 const getSummary = (nodes: MapNode[], edges: Edge[]) => {
   // For each node, get the sentence that is connected to it
   // sort the nodes from the root node to the leaf nodes (as a tree)
-  const orderedNodes = getTreeOrder(nodes, edges);
+  // const orderedNodes = getTreeOrder(nodes, edges);
 
-  if (orderedNodes.length === 1) {
+  if (nodes.length === 1) {
     return (
       <Center
         bgColor={THEME_COLORS.peach}
@@ -73,7 +90,7 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
         alignItems="center"
       >
         <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
-          <LinkedHeader id="summary">Summary</LinkedHeader>
+          <LinkedHeader fontSize="2xl" id="summary">Summary</LinkedHeader>
           <Text>
             No summary available. Try using the mic and see what happens!
           </Text>
@@ -86,7 +103,8 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
     <Center
       bgColor={THEME_COLORS.peach}
       flexDir="column"
-      minW="500px"
+      width="50vw"
+      maxW="500px"
       minH="100vh"
       display="flex"
       height="100%"
@@ -94,11 +112,11 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
       alignItems="center"
     >
       <Card m="4" p="10" borderRadius="10px" boxShadow="lg">
-        {orderedNodes.map((node) => {
+        {nodes.map(node => {
           if (node.keyword === "root") {
             return (
               <Flex>
-                <LinkedHeader id="summary">Summary</LinkedHeader>
+                <LinkedHeader fontSize="2xl" id="summary">Summary</LinkedHeader>
               </Flex>
             );
           }
@@ -118,7 +136,7 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
               };
             });
           return (
-            <Flex>
+            <Flex flexDir="column">
               <LinkedHeader id={keyword}>{keyword}</LinkedHeader>
               <p>{sentences}</p>
               {relatedTopics.map((topic) => (
@@ -139,8 +157,21 @@ const getSummary = (nodes: MapNode[], edges: Edge[]) => {
   );
 };
 
+
+  
 function GraphPage() {
   const [transcript, setTranscript] = React.useState<string>("");
+
+  const updateTranscript = async(
+    transcript: string
+  ) => {
+    setTranscript(transcript);
+    const response = await addSentenceChunk(transcript);
+    const { nodes, edges } = response.data;
+    setNodes(nodes.map(mapNodeToNode));
+    setEdges(edges);
+  }
+  
   const [mode, setMode] = React.useState<DisplayMode>(DisplayMode.TaskMode);
   const nodeTypes = useMemo(
     () => ({ custom: CustomNode, record: RecordNode }),
@@ -160,7 +191,7 @@ function GraphPage() {
       data: {
         sentences: [],
         updateGraph,
-        setTranscript,
+        setTranscript: updateTranscript,
       },
     },
   ];
@@ -177,12 +208,16 @@ function GraphPage() {
   const addSentenceToGraph = useCallback(async (sentence: string) => {
     const { edges, nodes } = await addSentenceChunk(sentence);
     updateGraph(nodes, edges);
-    setSummary(getSummary(nodes as any, edges));
+    setSummary(getSummary(nodes, edges));
   }, []);
 
   useEffect(() => {
-    setSummary(getSummary(nodes as any, edges));
-  }, [nodes, edges, mode]);
+    getGraph().then((graph) => {
+      const { edges, nodes } = graph;
+      updateGraph(nodes, edges);
+      setSummary(getSummary(nodes, edges));
+    });
+  }, [transcript]);
 
   return (
     <Layout
@@ -194,7 +229,7 @@ function GraphPage() {
         )
       }
     >
-      <Flex justifyContent={"space-between"}>
+      <Flex justifyContent={"space-between"} textTransform="lowercase">
         {mode === DisplayMode.TaskMode && <>{summary}</>}
         <Flex
           textAlign={"center"}

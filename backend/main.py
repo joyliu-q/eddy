@@ -42,5 +42,10 @@ async def scribe(audio: UploadFile = File(...)):
     content = await audio.read()
     transcript = transcribe_audio(content)
     print(f"Transcript: {transcript}")
+    process_sentence_chunk(transcript["text"].strip())
     return transcript['text'].strip()
     # return process_sentence_chunk(transcript["text"].strip())
+
+@app.get("/get-graph")
+def get_graph():
+    return graph.to_json()

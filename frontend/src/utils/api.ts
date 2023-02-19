@@ -7,3 +7,12 @@ export async function addSentenceChunk(chunk: string) {
     },
   }).then((res) => res.json());
 }
+
+export async function getGraph() {
+  return fetch(`${API_URL}/get-graph`, {
+    method: "GET",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  }).then((res) => res.json());
+}

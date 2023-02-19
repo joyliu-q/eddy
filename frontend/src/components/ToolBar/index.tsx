@@ -19,6 +19,14 @@ export function ToolBar({onSwitchMode}: {onSwitchMode: () => void}) {
   // Check if the current pathname is '/about'
   let navLinks: NavLink[];
   const isOnAboutPage = location.pathname === "/about";
+  const notFoundNavLinks: NavLink[] = [
+    {
+      link: "/",
+      icon: <ArrowBackIcon />,
+      onClick: () => { },
+    },
+  ];
+
   const aboutNavLinks = [
     {
       link: "/",
@@ -70,7 +78,7 @@ export function ToolBar({onSwitchMode}: {onSwitchMode: () => void}) {
       zIndex="100"
       spacing="20px"
     >
-      {(location.pathname === "/about" ? aboutNavLinks : searchParams.get("mode") === "graph" ? graphNavLinks : listNavLinks).map((link) => (
+      {(location.pathname === "/about" ? aboutNavLinks : searchParams.get("mode") === "list" ? listNavLinks : location.pathname === "/"? graphNavLinks: notFoundNavLinks).map((link) => (
         
         link.link ? (
           <Link to={link.link}>
