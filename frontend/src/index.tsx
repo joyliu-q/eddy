@@ -6,6 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import GraphPage from "./pages/GraphPage";
 import AboutPage from "./pages/AboutPage";
 import { ChakraProvider } from "@chakra-ui/react";
+import NotFoundPage from "./pages/NotFoundPage";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -15,7 +17,12 @@ const router = createBrowserRouter([
     path: "/about",
     element: <AboutPage />,
   },
+  {
+    path: "*",
+    element: <NotFoundPage />,
+  }
 ]);
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
