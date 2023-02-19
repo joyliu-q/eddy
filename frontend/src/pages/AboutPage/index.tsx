@@ -79,14 +79,14 @@ export default function AboutPage() {
                   <Image boxSize="300px" src="ideation.png" alt="ideation" />
                   <Stack p={4} divider={<StackDivider />} spacing="4">
                     <Box>
-                      <Heading size="md">
+                      <Heading size="lg">
                         Studies show we have 6200 thoughts per day (Nature)
                       </Heading>
-                      <Text pt="2" fontSize="sm">
+                      <Text pt="2" fontSize="md">
                         The majority of these thoughts are lost due to our
                         inability to capture and organize them.
                       </Text>
-                      <Text pt="2" fontSize="sm">
+                      <Text pt="2" fontSize="md">
                         Eddy is designed to help you overcome the common
                         challenges of brainstorming and productivity. With Eddy,
                         you can track your ideas by simply speaking to the mic,
@@ -98,12 +98,15 @@ export default function AboutPage() {
                 </Flex>
               </CardBody>
             </Card>
+            <Card>
+              <Image src="demo.png" alt="demo" />
+            </Card>
             <Card {...cardStyle}>
               <CardBody>
                 <Stack divider={<StackDivider />} spacing="4">
                   <Box>
-                    <Heading size="md">Just a click of the mic</Heading>
-                    <Text pt="2" fontSize="sm">
+                    <Heading size="lg">Just a click of the mic</Heading>
+                    <Text pt="2" fontSize="md">
                       Eddy uses speech recognition to capture your thoughts and
                       organize them into a graph structure. All you need to do
                       is click on the mic button and start speaking. Eddie will
@@ -116,12 +119,12 @@ export default function AboutPage() {
               </CardBody>
             </Card>
             <Flex>
-              <Card maxW="sm" {...cardStyle}>
+              <Card maxW="sm" {...cardStyle} border={`2px solid ${THEME_COLORS.peach}`} bgColor={THEME_COLORS.eggshell}>
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="4">
                     <Box>
-                      <Heading size="md">Turn Ideas into Reality</Heading>
-                      <Text pt="2" fontSize="sm">
+                      <Heading size="lg">Turn Ideas into Reality</Heading>
+                      <Text pt="2" fontSize="md">
                         With image exports, AI generated mood boards, and a
                         summary of your ideas, Eddy will help you turn your
                         ideas into reality. Eddy will help you visualize your
@@ -132,12 +135,12 @@ export default function AboutPage() {
                 </CardBody>
               </Card>
               <Box p={2} />
-              <Card maxW="sm" {...cardStyle}>
+              <Card maxW="sm" {...cardStyle} border={`2px solid ${THEME_COLORS.peach}`} bgColor={THEME_COLORS.paleYellow}>
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="4">
                     <Box>
-                      <Heading size="md">Gain Key Insights</Heading>
-                      <Text pt="2" fontSize="sm">
+                      <Heading size="lg">Gain Key Insights</Heading>
+                      <Text pt="2" fontSize="md">
                         Unravel your ideas and learn more about your thinking
                         style with your generated spokesona. Are you more of a
                         depth or breadth thinker? What is the branching factor
@@ -149,15 +152,13 @@ export default function AboutPage() {
                 </CardBody>
               </Card>
               <Box p={2} />
-              <Card maxW="sm" {...cardStyle}>
+              <Card maxW="sm" {...cardStyle} border={`2px solid ${THEME_COLORS.peach}`} bgColor={THEME_COLORS.eggshell}>
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="4">
                     <Box>
-                      <Heading size="md">Turn Ideas into Reality</Heading>
-                      <Text pt="2" fontSize="sm">
-                        With image exports, AI generated mood boards, and a
-                        summary of your ideas, Eddy will help you turn your
-                        ideas into reality.
+                      <Heading size="lg">Interactive Ideation</Heading>
+                      <Text pt="2" fontSize="md">
+                        Whether it is by yourself or in a group meeting, Eddy makes it interactive and fun to brainstorm, with real-time feedback and you speak.
                       </Text>
                     </Box>
                   </Stack>
