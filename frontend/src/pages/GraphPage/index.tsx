@@ -30,14 +30,7 @@ const initialNodes: MapNode[] = [
     },
   },
 ];
-const initialEdges: Edge[] = [
-  // {
-  //   id: "e1-2",
-  //   source: "1",
-  //   target: "2",
-  //   markerEnd: { type: MarkerType.ArrowClosed },
-  // },
-];
+const initialEdges: Edge[] = [];
 const fitViewOptions: FitViewOptions = {
   padding: 0.2,
 };

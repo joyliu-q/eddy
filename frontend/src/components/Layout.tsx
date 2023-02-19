@@ -1,4 +1,5 @@
 import Navbar from "./Navbar";
+import { ToolBar } from "./ToolBar";
 
 type Props = {
   children?: React.ReactNode;
@@ -6,7 +7,7 @@ type Props = {
 export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <div>
-      <Navbar />
+      <ToolBar />
       {children}
     </div>
   );
