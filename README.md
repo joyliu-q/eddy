@@ -33,4 +33,4 @@ Melding speech recognition and natural language processing tools required us to 
 # Supplementary Material
 
 ## Mindmap Algorithm
-![Mindmap Algorithm](https://i.imgur.com/XnWAeP8.png)
+![Mindmap Algorithm](https://i.imgur.com/QtqeBjG.png)
