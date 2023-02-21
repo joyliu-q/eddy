@@ -87,8 +87,9 @@ export const GraphSummary = ({ nodes, edges }: GraphSummaryProps) => {
       m: "4",
       p: "10",
       borderRadius: "10px",
+      overflowY: "auto",
       boxShadow: "lg",
-    },
+    } as any,
   };
 
   if (orderedNodes.length === 1) {
@@ -136,27 +137,29 @@ export const GraphSummary = ({ nodes, edges }: GraphSummaryProps) => {
                 edge.source === node.id ? edge.target : edge.source;
               return {
                 type: edge.source === node.id ? "child" : "parent",
-                keyword: nodes.find((n) => node.id === otherNodeId)?.data
-                  .keyword,
+                keyword: otherNodeId,
               };
             });
           return (
-            <Flex flexDir="column">
+            <Flex flexDir="column" my={2}>
               <LinkedHeader id={keyword}>{keyword}</LinkedHeader>
               <p>{sentences}</p>
               <HStack>
-                {relatedTopics.map((topic) => (
-                  // TODO: add hyperlinks to the other nodes
-                  <Link href={`#${topic.keyword}`}>
-                    <Tag
-                      bgColor={
-                        topic.type === "child" ? "red.300" : "yellow.300"
-                      }
-                    >
-                      {topic.keyword}
-                    </Tag>
-                  </Link>
-                ))}
+                {relatedTopics.map(
+                  (topic) =>
+                    // TODO: add hyperlinks to the other nodes
+                    topic.keyword && (
+                      <Link href={`#${topic.keyword}`}>
+                        <Tag
+                          bgColor={
+                            topic.type === "child" ? "red.300" : "yellow.300"
+                          }
+                        >
+                          {topic.keyword}
+                        </Tag>
+                      </Link>
+                    )
+                )}
               </HStack>
             </Flex>
           );

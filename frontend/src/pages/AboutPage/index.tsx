@@ -33,7 +33,7 @@ export default function AboutPage() {
           flexDir="column"
           width="100vw"
           bgColor={THEME_COLORS.peach}
-          height="400px"
+          height="calc(100vh - 100px)"
           maxHeight="100vh"
           justifyContent="space-between"
         >
@@ -53,7 +53,9 @@ export default function AboutPage() {
                 <Logo />
               </Icon>
               <Box p={2} />
-              <Heading fontSize="8xl">Eddy</Heading>
+              <Heading alignItems="center" fontSize="8xl">
+                Eddy
+              </Heading>
             </Flex>
 
             <Link to={"/"} style={{ textDecoration: "none" }}>
@@ -119,7 +121,12 @@ export default function AboutPage() {
               </CardBody>
             </Card>
             <Flex>
-              <Card maxW="sm" {...cardStyle} border={`2px solid ${THEME_COLORS.peach}`} bgColor={THEME_COLORS.eggshell}>
+              <Card
+                maxW="sm"
+                {...cardStyle}
+                border={`2px solid ${THEME_COLORS.peach}`}
+                bgColor={THEME_COLORS.eggshell}
+              >
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="4">
                     <Box>
@@ -135,7 +142,12 @@ export default function AboutPage() {
                 </CardBody>
               </Card>
               <Box p={2} />
-              <Card maxW="sm" {...cardStyle} border={`2px solid ${THEME_COLORS.peach}`} bgColor={THEME_COLORS.paleYellow}>
+              <Card
+                maxW="sm"
+                {...cardStyle}
+                border={`2px solid ${THEME_COLORS.peach}`}
+                bgColor={THEME_COLORS.paleYellow}
+              >
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="4">
                     <Box>
@@ -152,13 +164,20 @@ export default function AboutPage() {
                 </CardBody>
               </Card>
               <Box p={2} />
-              <Card maxW="sm" {...cardStyle} border={`2px solid ${THEME_COLORS.peach}`} bgColor={THEME_COLORS.eggshell}>
+              <Card
+                maxW="sm"
+                {...cardStyle}
+                border={`2px solid ${THEME_COLORS.peach}`}
+                bgColor={THEME_COLORS.eggshell}
+              >
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing="4">
                     <Box>
                       <Heading size="lg">Interactive Ideation</Heading>
                       <Text pt="2" fontSize="md">
-                        Whether it is by yourself or in a group meeting, Eddy makes it interactive and fun to brainstorm, with real-time feedback and you speak.
+                        Whether it is by yourself or in a group meeting, Eddy
+                        makes it interactive and fun to brainstorm, with
+                        real-time feedback and you speak.
                       </Text>
                     </Box>
                   </Stack>

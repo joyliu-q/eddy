@@ -5,7 +5,7 @@ import { MapNode } from "../types";
 import { addSentenceChunk } from "../utils/api";
 
 const TICK_LENGTH_MS = 2000;
-const TICK_LENGTH = 10;
+const TICK_LENGTH = 100;
 
 const useRecord = (updateGraph: MapNode["data"]["updateGraph"]) => {
   const { startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder(
@@ -93,6 +93,7 @@ const useRecord = (updateGraph: MapNode["data"]["updateGraph"]) => {
     if (tickTimer.current) {
       clearInterval(tickTimer.current);
     }
+    stopRecording();
 
     if (!updateGraph) return;
     console.log("stop", transcript);

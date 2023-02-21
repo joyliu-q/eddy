@@ -131,7 +131,7 @@ function GraphPage() {
               fitView
               fitViewOptions={fitViewOptions}
             >
-              <Background color="#FFD39E" />
+              <Background color="#FFD39E" size={2} />
             </ReactFlow>
           </Flex>
         </Layout>

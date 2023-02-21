@@ -17,7 +17,7 @@ export const LiveTranscript = ({
   useEffect(() => {
     const options = {
       strings: [transcript],
-      typeSpeed: 50,
+      typeSpeed: 10,
     };
 
     // elRef refers to the <span> rendered below
@@ -42,7 +42,7 @@ export const LiveTranscript = ({
         />{" "} */}
         <Box
           overflow={"hidden"}
-          style={{ width: 300, whiteSpace: "nowrap" }}
+          style={{ width: 800, whiteSpace: "nowrap" }}
           textAlign="right"
           ref={el}
         ></Box>
